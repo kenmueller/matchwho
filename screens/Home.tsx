@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
 import {
 	Keyboard,
 	KeyboardAvoidingView,
@@ -10,15 +10,53 @@ import {
 	View,
 	TouchableOpacity
 } from 'react-native'
+import { useNavigation, NavigationProp } from '@react-navigation/native'
 
+import { AppScreens } from '../navigators/App'
 import MatchIcon from '../icons/Match'
+import gameExists from '../lib/api/gameExists'
+import alertError from '../lib/error/alert'
+import ErrorCode from '../lib/error/code'
+import HttpError from '../lib/error/http'
 import CODE_LENGTH from '../lib/game/code'
 import theme from '../lib/theme'
+import createGame from '../lib/api/createGame'
 
 const HomeScreen = () => {
-	const [code, setCode] = useState('')
+	const navigation = useNavigation<NavigationProp<AppScreens>>()
 
+	const [code, setCode] = useState('')
+	const [isLoading, setIsLoading] = useState(false)
+
+	const normalizedCode = code.toLowerCase()
 	const isJoinDisabled = code.length !== CODE_LENGTH
+
+	const join = useCallback(async () => {
+		try {
+			setIsLoading(true)
+
+			const exists = gameExists(normalizedCode)
+			if (!exists)
+				throw new HttpError(ErrorCode.NotFound, 'Game not found')
+
+			navigation.navigate('Game', { code: normalizedCode })
+		} catch (error) {
+			setIsLoading(false)
+			alertError(error)
+		}
+	}, [navigation, normalizedCode, setIsLoading])
+
+	const create = useCallback(async () => {
+		try {
+			setIsLoading(true)
+
+			const newCode = await createGame()
+			navigation.navigate('Game', { code: newCode })
+		} catch (error) {
+			setIsLoading(false)
+			alertError(error)
+		}
+	}, [navigation, setIsLoading])
 
 	return (
 		<KeyboardAvoidingView
@@ -47,16 +85,24 @@ const HomeScreen = () => {
 							style={styles.joinInput}
 						/>
 						<TouchableOpacity
-							disabled={isJoinDisabled}
+							disabled={isLoading || isJoinDisabled}
+							onPress={join}
 							style={[
 								styles.join,
-								isJoinDisabled && styles.disabled
+								(isLoading || isJoinDisabled) && styles.disabled
 							]}
 						>
 							<Text style={styles.joinText}>Join Game</Text>
 						</TouchableOpacity>
 						<View style={styles.divider} />
-						<TouchableOpacity style={styles.create}>
+						<TouchableOpacity
+							disabled={isLoading}
+							onPress={create}
+							style={[
+								styles.create,
+								isLoading && styles.disabled
+							]}
+						>
 							<Text style={styles.createText}>Create Game</Text>
 						</TouchableOpacity>
 					</View>
