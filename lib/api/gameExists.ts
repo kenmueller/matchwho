@@ -5,7 +5,7 @@ const gameExists = async (code: string) => {
 	const response = await fetch(new URL(`/games/${code}/exists`, API_ORIGIN))
 	if (!response.ok) throw await errorFromResponse(response)
 
-	return await response.json()
+	return (await response.json()) as boolean
 }
 
 export default gameExists

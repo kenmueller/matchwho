@@ -21,6 +21,7 @@ import HttpError from '../lib/error/http'
 import CODE_LENGTH from '../lib/game/code'
 import theme from '../lib/theme'
 import createGame from '../lib/api/createGame'
+import gameMeta from '../lib/api/gameMeta'
 
 const HomeScreen = () => {
 	const navigation = useNavigation<NavigationProp<AppScreens>>()
@@ -39,7 +40,10 @@ const HomeScreen = () => {
 			if (!exists)
 				throw new HttpError(ErrorCode.NotFound, 'Game not found')
 
-			navigation.navigate('Game', { code: normalizedCode })
+			navigation.navigate('Game', {
+				code: normalizedCode,
+				meta: await gameMeta(normalizedCode)
+			})
 		} catch (error) {
 			setIsLoading(false)
 			alertError(error)
@@ -51,7 +55,11 @@ const HomeScreen = () => {
 			setIsLoading(true)
 
 			const newCode = await createGame()
-			navigation.navigate('Game', { code: newCode })
+
+			navigation.navigate('Game', {
+				code: newCode,
+				meta: await gameMeta(newCode)
+			})
 		} catch (error) {
 			setIsLoading(false)
 			alertError(error)
