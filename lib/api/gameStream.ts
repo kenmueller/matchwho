@@ -11,10 +11,7 @@ export interface GameStream {
 
 const gameStream = (code: string, name: string): GameStream => {
 	const socket = new WebSocket(
-		new URL(
-			`/games/${code}?name=${encodeURIComponent(name)}`,
-			SOCKET_ORIGIN
-		)
+		`${SOCKET_ORIGIN}/games/${code}?name=${encodeURIComponent(name)}`
 	)
 
 	return {
