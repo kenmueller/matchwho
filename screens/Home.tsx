@@ -168,7 +168,8 @@ const styles = StyleSheet.create({
 		color: theme.yellow,
 		borderWidth: 2,
 		borderColor: theme.yellow,
-		borderRadius: 16
+		borderRadius: 16,
+		outlineStyle: 'none'
 	},
 	join: {
 		marginTop: 16,

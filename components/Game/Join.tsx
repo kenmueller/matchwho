@@ -49,9 +49,7 @@ const styles = StyleSheet.create({
 	root: {
 		maxWidth: 300,
 		width: '100%',
-		alignItems: 'center',
-		marginTop: 'auto',
-		marginBottom: 'auto'
+		alignItems: 'center'
 	},
 	input: {
 		width: '100%',
@@ -62,7 +60,8 @@ const styles = StyleSheet.create({
 		color: theme.yellow,
 		borderWidth: 2,
 		borderColor: theme.yellow,
-		borderRadius: 16
+		borderRadius: 16,
+		outlineStyle: 'none'
 	},
 	join: {
 		marginTop: 16,
