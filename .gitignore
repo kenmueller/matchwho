@@ -11,4 +11,4 @@ npm-debug.*
 web-build/
 .DS_Store
 .metro-health-check*
-api.json
+.env

@@ -1,9 +1,6 @@
-const devOrigin = () => {
-	const { origin, port } = require('../../api.json')
-	return `http://${origin}:${port}`
-}
+// @ts-ignore
+import { API_ORIGIN } from '@env'
 
-const API_ORIGIN = __DEV__ ? devOrigin() : 'https://matchwho.onrender.com'
 export const SOCKET_ORIGIN = API_ORIGIN.replace('http', 'ws')
 
 export default API_ORIGIN
