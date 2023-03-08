@@ -10,7 +10,8 @@ import {
 	View,
 	TouchableOpacity
 } from 'react-native'
-import { useNavigation, NavigationProp } from '@react-navigation/native'
+import { useNavigation, StackActions } from '@react-navigation/native'
+import { StackNavigationProp } from '@react-navigation/stack'
 
 import { AppScreens } from '../navigators/App'
 import MatchIcon from '../icons/Match'
@@ -24,7 +25,7 @@ import createGame from '../lib/api/createGame'
 import gameMeta from '../lib/api/gameMeta'
 
 const HomeScreen = () => {
-	const navigation = useNavigation<NavigationProp<AppScreens>>()
+	const navigation = useNavigation<StackNavigationProp<AppScreens, 'Home'>>()
 
 	const [code, setCode] = useState('')
 	const [isLoading, setIsLoading] = useState(false)
@@ -40,10 +41,12 @@ const HomeScreen = () => {
 			if (!exists)
 				throw new HttpError(ErrorCode.NotFound, 'Game not found')
 
-			navigation.navigate('Game', {
-				code: normalizedCode,
-				meta: await gameMeta(normalizedCode)
-			})
+			navigation.dispatch(
+				StackActions.replace('Game', {
+					code: normalizedCode,
+					meta: await gameMeta(normalizedCode)
+				})
+			)
 		} catch (error) {
 			setIsLoading(false)
 			alertError(error)
@@ -56,10 +59,12 @@ const HomeScreen = () => {
 
 			const newCode = await createGame()
 
-			navigation.navigate('Game', {
-				code: newCode,
-				meta: await gameMeta(newCode)
-			})
+			navigation.dispatch(
+				StackActions.replace('Game', {
+					code: newCode,
+					meta: await gameMeta(newCode)
+				})
+			)
 		} catch (error) {
 			setIsLoading(false)
 			alertError(error)

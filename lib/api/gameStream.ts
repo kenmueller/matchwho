@@ -9,9 +9,9 @@ export interface GameStream {
 	close(): void
 }
 
-const gameStream = (code: string, name: string): GameStream => {
+const gameStream = (code: string, name: string | null): GameStream => {
 	const socket = new WebSocket(
-		`${SOCKET_ORIGIN}/games/${code}?name=${encodeURIComponent(name)}`
+		`${SOCKET_ORIGIN}/games/${code}?name=${encodeURIComponent(name ?? '')}`
 	)
 
 	return {

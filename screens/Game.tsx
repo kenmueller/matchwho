@@ -1,17 +1,16 @@
 import { useState, useCallback, useEffect } from 'react'
-import {
-	StyleSheet,
-	Text,
-	View,
-	TextInput,
-	TouchableOpacity
-} from 'react-native'
+import { Platform, StyleSheet, Text, View } from 'react-native'
 import {
 	useRoute,
 	RouteProp,
 	useNavigation,
-	NavigationProp
+	StackActions,
+	CompositeNavigationProp
 } from '@react-navigation/native'
+import { DrawerNavigationProp } from '@react-navigation/drawer'
+import { StackNavigationProp } from '@react-navigation/stack'
+import { TouchableOpacity } from 'react-native-gesture-handler'
+import { MaterialIcons } from '@expo/vector-icons'
 
 import { AppScreens } from '../navigators/App'
 import theme from '../lib/theme'
@@ -20,53 +19,63 @@ import GameState from '../lib/game/state'
 import Game from '../lib/game'
 import gameMeta from '../lib/api/gameMeta'
 import gameMetaStatus from '../lib/game/metaStatus'
-import MAX_NAME_LENGTH from '../lib/game/name'
+import { GameScreens } from '../navigators/Game'
+import JoinGame from '../components/Game/Join'
 
 const GameScreen = () => {
-	const navigation = useNavigation<NavigationProp<AppScreens>>()
+	const navigation =
+		useNavigation<
+			CompositeNavigationProp<
+				DrawerNavigationProp<GameScreens, 'GameInternal'>,
+				StackNavigationProp<AppScreens, 'Game'>
+			>
+		>()
 
-	const route = useRoute<RouteProp<AppScreens>>()
-	const { code, meta } = route.params!
+	const route = useRoute<RouteProp<GameScreens, 'GameInternal'>>()
+	const { code, meta } = route.params
 
-	const [name, setName] = useState('')
 	const [gameStream, setGameStream] = useState<GameStream | null>(null)
-
 	const [game, setGame] = useState<Game | null>(null)
 
 	const joining = gameStream !== null && !game
-	const isJoinDisabled = !name
 
-	const join = useCallback(() => {
-		const newGameStream = createGameStream(code, name)
+	const join = useCallback(
+		(name: string | null) => {
+			const newGameStream = createGameStream(code, name)
 
-		newGameStream.onData(async data => {
-			switch (data.key) {
-				case 'game':
-					setGame(data.value)
-					break
-				case 'next':
-					navigation.navigate('Game', {
-						code: data.value,
-						meta: await gameMeta(data.value)
-					})
-					break
-			}
-		})
+			newGameStream.onData(async data => {
+				switch (data.key) {
+					case 'game':
+						setGame(data.value)
+						break
+					case 'next':
+						navigation.dispatch(
+							StackActions.replace('Game', {
+								code: data.value,
+								meta: await gameMeta(data.value)
+							})
+						)
+						setGameStream(null)
+						break
+				}
+			})
 
-		setGameStream(newGameStream)
-	}, [code, name, navigation, setGame, setGameStream])
+			setGameStream(newGameStream)
+		},
+		[code, navigation, setGame, setGameStream]
+	)
 
-	useEffect(() => {
-		navigation.setOptions({
-			title: `${
-				gameStream && game ? 'Game running' : gameMetaStatus(meta)
-			} | Match Who`
-		})
-	}, [navigation, gameStream, game, meta])
+	const showPlayers = useCallback(() => {
+		navigation.openDrawer()
+	}, [navigation])
+
+	const close = useCallback(() => {
+		navigation.dispatch(StackActions.replace('Home'))
+	}, [navigation])
 
 	useEffect(() => {
 		// Spectate if game has already started
-		if (meta.state !== GameState.Joining) join()
+		if (meta.state !== GameState.Joining) join(null)
 	}, [meta, join])
 
 	useEffect(() => {
@@ -77,75 +86,106 @@ const GameScreen = () => {
 		}
 	}, [gameStream])
 
+	useEffect(() => {
+		navigation.setOptions({
+			title: `${
+				gameStream && game ? 'Game running' : gameMetaStatus(meta)
+			} | Match Who`
+		})
+	}, [navigation, gameStream, game, meta])
+
+	useEffect(() => {
+		navigation.setOptions({
+			headerTitle: () => (
+				<Text style={styles.title}>
+					Game code: <Text style={styles.titleCode}>{code}</Text>
+				</Text>
+			)
+		})
+	}, [navigation, code])
+
+	useEffect(() => {
+		navigation.setOptions({
+			headerLeft: () =>
+				game && (
+					<TouchableOpacity
+						onPress={showPlayers}
+						style={styles.players}
+					>
+						<MaterialIcons
+							name="people"
+							style={styles.playersIcon}
+						/>
+						{Platform.OS === 'web' && (
+							<Text style={styles.playersText}>Players</Text>
+						)}
+					</TouchableOpacity>
+				)
+		})
+	}, [navigation, game, showPlayers])
+
+	useEffect(() => {
+		navigation.setOptions({
+			headerRight: () => (
+				<TouchableOpacity onPress={close} style={styles.close}>
+					<MaterialIcons name="close" style={styles.closeIcon} />
+				</TouchableOpacity>
+			)
+		})
+	}, [navigation, close])
+
 	return (
 		<View style={styles.root}>
 			{gameStream && game ? (
 				<Text style={{ color: theme.white }}>GameView</Text>
 			) : meta.state === GameState.Joining ? (
-				<View style={styles.joinForm}>
-					<TextInput
-						value={name}
-						placeholder="Name"
-						placeholderTextColor={theme.yellowWithOpacity(0.5)}
-						maxLength={MAX_NAME_LENGTH}
-						onChangeText={setName}
-						style={styles.joinInput}
-					/>
-					<TouchableOpacity
-						disabled={joining || isJoinDisabled}
-						onPress={join}
-						style={[
-							styles.join,
-							(joining || isJoinDisabled) && styles.disabled
-						]}
-					>
-						<Text style={styles.joinText}>Join Game</Text>
-					</TouchableOpacity>
-				</View>
+				<JoinGame joining={joining} join={join} />
 			) : /* Joining as a spectator */ null}
 		</View>
 	)
 }
 
 const styles = StyleSheet.create({
+	title: {
+		fontSize: 20,
+		fontWeight: '700',
+		color: theme.white
+	},
+	titleCode: {
+		color: theme.yellow
+	},
+	players: {
+		flexDirection: 'row',
+		marginLeft: 24,
+
+		// @ts-ignore
+		cursor: 'pointer'
+	},
+	playersIcon: {
+		fontSize: 30,
+		color: theme.white
+	},
+	playersText: {
+		marginLeft: 8,
+		fontSize: 20,
+		fontWeight: '700',
+		color: theme.white
+	},
+	close: {
+		marginRight: 24,
+
+		// @ts-ignore
+		cursor: 'pointer'
+	},
+	closeIcon: {
+		fontSize: 30,
+		color: theme.white
+	},
 	root: {
 		width: '100%',
 		height: '100%',
 		alignItems: 'center',
 		backgroundColor: theme.dark
-	},
-	joinForm: {
-		maxWidth: 300,
-		width: '100%',
-		alignItems: 'center',
-		marginTop: 'auto',
-		marginBottom: 'auto'
-	},
-	joinInput: {
-		width: '100%',
-		paddingVertical: 8,
-		paddingHorizontal: 16,
-		fontSize: 20,
-		fontWeight: '700',
-		color: theme.yellow,
-		borderWidth: 2,
-		borderColor: theme.yellow,
-		borderRadius: 16
-	},
-	join: {
-		marginTop: 16,
-		paddingVertical: 10,
-		paddingHorizontal: 20,
-		backgroundColor: theme.yellowWithOpacity(0.4),
-		borderRadius: 16
-	},
-	joinText: {
-		fontSize: 20,
-		fontWeight: '700',
-		color: theme.yellow
-	},
-	disabled: {
-		opacity: 0.5
 	}
 })
 

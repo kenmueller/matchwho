@@ -1,7 +1,7 @@
 import { createStackNavigator } from '@react-navigation/stack'
 
 import HomeScreen from '../screens/Home'
-import GameScreen from '../screens/Game'
+import GameNavigator from './Game'
 import GameMeta from '../lib/game/meta'
 
 export type AppScreens = {
@@ -20,7 +20,7 @@ const AppNavigator = () => (
 		screenOptions={{ title: 'Match Who', headerShown: false }}
 	>
 		<Stack.Screen name="Home" component={HomeScreen} />
-		<Stack.Screen name="Game" component={GameScreen} />
+		<Stack.Screen name="Game" component={GameNavigator} />
 	</Stack.Navigator>
 )
 
