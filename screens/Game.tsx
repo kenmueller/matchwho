@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from 'react'
+import { useState, useContext, useCallback, useEffect } from 'react'
 import { Platform, StyleSheet, Text, View } from 'react-native'
 import {
 	useRoute,
@@ -16,11 +16,11 @@ import { AppScreens } from '../navigators/App'
 import theme from '../lib/theme'
 import createGameStream, { GameStream } from '../lib/api/gameStream'
 import GameState from '../lib/game/state'
-import Game from '../lib/game'
 import gameMeta from '../lib/api/gameMeta'
 import gameMetaStatus from '../lib/game/metaStatus'
 import { GameScreens } from '../navigators/Game'
 import JoinGame from '../components/Game/Join'
+import GameContext from '../lib/game/context'
 
 const GameScreen = () => {
 	const navigation =
@@ -35,7 +35,7 @@ const GameScreen = () => {
 	const { code, meta } = route.params
 
 	const [gameStream, setGameStream] = useState<GameStream | null>(null)
-	const [game, setGame] = useState<Game | null>(null)
+	const [game, setGame] = useContext(GameContext)
 
 	const joining = gameStream !== null && !game
 
