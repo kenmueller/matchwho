@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react'
+import { useRef, useState, useCallback, useEffect } from 'react'
 import {
 	View,
 	TextInput,
@@ -17,6 +17,8 @@ const JoinGame = ({
 	joining: boolean
 	join: (name: string) => void
 }) => {
+	const input = useRef<TextInput | null>(null)
+
 	const [name, setName] = useState('')
 	const disabled = !name
 
@@ -24,9 +26,14 @@ const JoinGame = ({
 		join(name)
 	}, [join, name])
 
+	useEffect(() => {
+		input.current?.focus()
+	}, [input])
+
 	return (
 		<View style={styles.root}>
 			<TextInput
+				ref={current => (input.current = current)}
 				value={name}
 				placeholder="Name"
 				placeholderTextColor={theme.yellowWithOpacity(0.5)}
