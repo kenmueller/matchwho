@@ -1,10 +1,22 @@
 import { StatusBar } from 'expo-status-bar'
-import { NavigationContainer } from '@react-navigation/native'
+import {
+	/* LinkingOptions, */ NavigationContainer
+} from '@react-navigation/native'
 
-import AppNavigator from './navigators/App'
+import AppNavigator, { AppScreens } from './navigators/App'
+
+// const linking: LinkingOptions<AppScreens> = {
+// 	prefixes: ['https://matchwho.io'],
+// 	config: {
+// 		screens: {
+// 			Home: '/',
+// 			Game: '/Game'
+// 		}
+// 	}
+// }
 
 const App = () => (
-	<NavigationContainer>
+	<NavigationContainer /* linking={linking} */>
 		<StatusBar style="light" />
 		<AppNavigator />
 	</NavigationContainer>

@@ -2,14 +2,10 @@ import { createStackNavigator } from '@react-navigation/stack'
 
 import HomeScreen from '../screens/Home'
 import GameNavigator from './Game'
-import GameMeta from '../lib/game/meta'
 
 export type AppScreens = {
 	Home: undefined
-	Game: {
-		code: string
-		meta: GameMeta
-	}
+	Game: { code: string }
 }
 
 const Stack = createStackNavigator<AppScreens>()

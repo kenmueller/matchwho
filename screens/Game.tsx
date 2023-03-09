@@ -16,13 +16,17 @@ import { AppScreens } from '../navigators/App'
 import theme from '../lib/theme'
 import createGameStream from '../lib/api/gameStream'
 import GameState from '../lib/game/state'
-import gameMeta from '../lib/api/gameMeta'
 import gameMetaStatus from '../lib/game/metaStatus'
 import { GameScreens } from '../navigators/Game'
 import JoinGame from '../components/Game/Join'
 import GameStreamContext from '../lib/game/context/stream'
 import GameContext from '../lib/game/context'
 import GameView from '../components/Game/View'
+import GameMeta from '../lib/game/meta'
+import gameMeta from '../lib/api/gameMeta'
+import alertError from '../lib/error/alert'
+import HttpError from '../lib/error/http'
+import ErrorCode from '../lib/error/code'
 
 const GameScreen = () => {
 	const navigation =
@@ -33,8 +37,8 @@ const GameScreen = () => {
 			>
 		>()
 
-	const route = useRoute<RouteProp<GameScreens, 'GameInternal'>>()
-	const { code, meta } = route.params
+	const { code } = useRoute<RouteProp<GameScreens, 'GameInternal'>>().params
+	const [meta, setMeta] = useState<GameMeta | null>(null)
 
 	const [gameStream, setGameStream] = useContext(GameStreamContext)
 	const [game, setGame] = useContext(GameContext)
@@ -52,10 +56,7 @@ const GameScreen = () => {
 						break
 					case 'next':
 						navigation.dispatch(
-							StackActions.replace('Game', {
-								code: data.value,
-								meta: await gameMeta(data.value)
-							})
+							StackActions.replace('Game', { code: data.value })
 						)
 						setGameStream(null)
 						break
@@ -76,8 +77,20 @@ const GameScreen = () => {
 	}, [navigation])
 
 	useEffect(() => {
+		gameMeta(code)
+			.then(setMeta)
+			.catch(() => {
+				console.log('catch')
+				alertError(
+					new HttpError(ErrorCode.NotFound, 'Invalid game code')
+				)
+				navigation.dispatch(StackActions.replace('Home'))
+			})
+	}, [navigation, code, setMeta])
+
+	useEffect(() => {
 		// Spectate if game has already started
-		if (meta.state !== GameState.Joining) join(null)
+		if (meta && meta.state !== GameState.Joining) join(null)
 	}, [meta, join])
 
 	useEffect(() => {
@@ -91,7 +104,11 @@ const GameScreen = () => {
 	useEffect(() => {
 		navigation.setOptions({
 			title: `${
-				gameStream && game ? 'Game running' : gameMetaStatus(meta)
+				meta
+					? gameStream && game
+						? 'Game running'
+						: gameMetaStatus(meta)
+					: 'Loading...'
 			} | Match Who`
 		})
 	}, [navigation, gameStream, game, meta])
@@ -137,11 +154,13 @@ const GameScreen = () => {
 
 	return (
 		<View style={styles.root}>
-			{gameStream && game ? (
-				<GameView />
-			) : meta.state === GameState.Joining ? (
-				<JoinGame joining={joining} join={join} />
-			) : /* Joining as a spectator */ null}
+			{meta ? (
+				gameStream && game ? (
+					<GameView />
+				) : meta.state === GameState.Joining ? (
+					<JoinGame joining={joining} join={join} />
+				) : /* Joining as a spectator */ null
+			) : /* Loading */ null}
 		</View>
 	)
 }

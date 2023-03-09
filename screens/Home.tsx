@@ -22,7 +22,6 @@ import HttpError from '../lib/error/http'
 import CODE_LENGTH from '../lib/game/code'
 import theme from '../lib/theme'
 import createGame from '../lib/api/createGame'
-import gameMeta from '../lib/api/gameMeta'
 
 const HomeScreen = () => {
 	const navigation = useNavigation<StackNavigationProp<AppScreens, 'Home'>>()
@@ -42,10 +41,7 @@ const HomeScreen = () => {
 				throw new HttpError(ErrorCode.NotFound, 'Game not found')
 
 			navigation.dispatch(
-				StackActions.replace('Game', {
-					code: normalizedCode,
-					meta: await gameMeta(normalizedCode)
-				})
+				StackActions.replace('Game', { code: normalizedCode })
 			)
 		} catch (error) {
 			setIsLoading(false)
@@ -59,12 +55,7 @@ const HomeScreen = () => {
 
 			const newCode = await createGame()
 
-			navigation.dispatch(
-				StackActions.replace('Game', {
-					code: newCode,
-					meta: await gameMeta(newCode)
-				})
-			)
+			navigation.dispatch(StackActions.replace('Game', { code: newCode }))
 		} catch (error) {
 			setIsLoading(false)
 			alertError(error)

@@ -2,6 +2,7 @@
 	"expo": {
 		"name": "Match Who",
 		"slug": "matchwho",
+		"scheme": "matchwho",
 		"version": "1.0.0",
 		"orientation": "portrait",
 		"icon": "./assets/icon.png",

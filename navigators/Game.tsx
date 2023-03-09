@@ -14,10 +14,7 @@ import { GameStream } from '../lib/api/gameStream'
 import GameStreamContext from '../lib/game/context/stream'
 
 export type GameScreens = {
-	GameInternal: {
-		code: string
-		meta: GameMeta
-	}
+	GameInternal: { code: string }
 }
 
 const Drawer = createDrawerNavigator<GameScreens>()
