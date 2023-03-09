@@ -67,13 +67,13 @@ const GameJoiningView = () => {
 const styles = StyleSheet.create({
 	center: {
 		alignSelf: 'center',
-		minWidth: 300,
 		marginTop: 'auto',
 		marginBottom: 'auto'
 	},
 	start: {
 		justifyContent: 'center',
 		alignItems: 'center',
+		width: 300,
 		paddingVertical: 16,
 		backgroundColor: theme.yellowWithOpacity(0.4),
 		borderRadius: 16
