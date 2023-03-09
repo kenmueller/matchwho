@@ -1,4 +1,5 @@
 import { Text, StyleSheet } from 'react-native'
+
 import theme from '../../lib/theme'
 
 const GameCompletedView = () => (

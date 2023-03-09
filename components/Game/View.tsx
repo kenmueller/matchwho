@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
 		opacity: 0.5
 	},
 	rounds: {
-		marginBottom: 12,
+		marginBottom: 6,
 		fontSize: 18,
 		fontWeight: '900',
 		color: theme.white
