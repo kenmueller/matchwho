@@ -8,7 +8,7 @@ import Player from '../../lib/game/player'
 import GameState from '../../lib/game/state'
 import theme from '../../lib/theme'
 
-const PlayersDrawerRow = ({ player }: { player: Player }) => {
+const GamePlayersDrawerRow = ({ player }: { player: Player }) => {
 	const [game] = useContext(GameContext)
 	if (!game) return null
 
@@ -111,4 +111,4 @@ const styles = StyleSheet.create({
 	}
 })
 
-export default PlayersDrawerRow
+export default GamePlayersDrawerRow

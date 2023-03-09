@@ -5,7 +5,7 @@ import GameContext from '../../lib/game/context'
 import theme from '../../lib/theme'
 import PlayersDrawerRow from './PlayersDrawerRow'
 
-const PlayersDrawer = () => {
+const GamePlayersDrawer = () => {
 	const [game] = useContext(GameContext)
 
 	return (
@@ -47,4 +47,4 @@ const styles = StyleSheet.create({
 	}
 })
 
-export default PlayersDrawer
+export default GamePlayersDrawer
