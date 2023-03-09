@@ -107,6 +107,8 @@ const GameScreen = () => {
 	useEffect(() => {
 		navigation.setOptions({
 			headerLeft: () =>
+				// Only allow opening of the sidebar if you've joined the game on mobile
+				Platform.OS !== 'web' &&
 				game && (
 					<TouchableOpacity
 						onPress={showPlayers}
@@ -116,9 +118,6 @@ const GameScreen = () => {
 							name="people"
 							style={styles.playersIcon}
 						/>
-						{Platform.OS === 'web' && (
-							<Text style={styles.playersText}>Players</Text>
-						)}
 					</TouchableOpacity>
 				)
 		})
@@ -155,7 +154,6 @@ const styles = StyleSheet.create({
 		color: theme.yellow
 	},
 	players: {
-		flexDirection: 'row',
 		marginLeft: 24,
 
 		// @ts-ignore
@@ -163,12 +161,6 @@ const styles = StyleSheet.create({
 	},
 	playersIcon: {
 		fontSize: 30,
-		color: theme.white
-	},
-	playersText: {
-		marginLeft: 8,
-		fontSize: 20,
-		fontWeight: '700',
 		color: theme.white
 	},
 	close: {
