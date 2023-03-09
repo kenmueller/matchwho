@@ -27,6 +27,7 @@ import gameMeta from '../lib/api/gameMeta'
 import alertError from '../lib/error/alert'
 import HttpError from '../lib/error/http'
 import ErrorCode from '../lib/error/code'
+import gameStatus from '../lib/game/status'
 
 const GameScreen = () => {
 	const navigation =
@@ -58,7 +59,6 @@ const GameScreen = () => {
 						navigation.dispatch(
 							StackActions.replace('Game', { code: data.value })
 						)
-						setGameStream(null)
 						break
 				}
 			})
@@ -106,7 +106,7 @@ const GameScreen = () => {
 			title: `${
 				meta
 					? gameStream && game
-						? 'Game running'
+						? gameStatus(game)
 						: gameMetaStatus(meta)
 					: 'Loading...'
 			} | Match Who`
