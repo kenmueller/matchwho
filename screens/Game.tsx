@@ -20,6 +20,7 @@ import gameMeta from '../lib/api/gameMeta'
 import gameMetaStatus from '../lib/game/metaStatus'
 import { GameScreens } from '../navigators/Game'
 import JoinGame from '../components/Game/Join'
+import GameStreamContext from '../lib/game/context/stream'
 import GameContext from '../lib/game/context'
 
 const GameScreen = () => {
@@ -34,7 +35,7 @@ const GameScreen = () => {
 	const route = useRoute<RouteProp<GameScreens, 'GameInternal'>>()
 	const { code, meta } = route.params
 
-	const [gameStream, setGameStream] = useState<GameStream | null>(null)
+	const [gameStream, setGameStream] = useContext(GameStreamContext)
 	const [game, setGame] = useContext(GameContext)
 
 	const joining = gameStream !== null && !game

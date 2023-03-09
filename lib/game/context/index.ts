@@ -1,6 +1,6 @@
 import { createContext, Dispatch, SetStateAction } from 'react'
 
-import Game from '.'
+import Game from '..'
 
 const GameContext = createContext<
 	[Game | null, Dispatch<SetStateAction<Game | null>>]
