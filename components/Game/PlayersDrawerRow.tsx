@@ -8,13 +8,7 @@ import Player from '../../lib/game/player'
 import GameState from '../../lib/game/state'
 import theme from '../../lib/theme'
 
-const PlayersDrawerRow = ({
-	player,
-	index
-}: {
-	player: Player
-	index: number
-}) => {
+const PlayersDrawerRow = ({ player }: { player: Player }) => {
 	const [game] = useContext(GameContext)
 	if (!game) return null
 

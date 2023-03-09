@@ -14,7 +14,7 @@ import { MaterialIcons } from '@expo/vector-icons'
 
 import { AppScreens } from '../navigators/App'
 import theme from '../lib/theme'
-import createGameStream, { GameStream } from '../lib/api/gameStream'
+import createGameStream from '../lib/api/gameStream'
 import GameState from '../lib/game/state'
 import gameMeta from '../lib/api/gameMeta'
 import gameMetaStatus from '../lib/game/metaStatus'
@@ -22,6 +22,7 @@ import { GameScreens } from '../navigators/Game'
 import JoinGame from '../components/Game/Join'
 import GameStreamContext from '../lib/game/context/stream'
 import GameContext from '../lib/game/context'
+import GameView from '../components/Game/View'
 
 const GameScreen = () => {
 	const navigation =
@@ -137,7 +138,7 @@ const GameScreen = () => {
 	return (
 		<View style={styles.root}>
 			{gameStream && game ? (
-				<Text style={{ color: theme.white }}>GameView</Text>
+				<GameView />
 			) : meta.state === GameState.Joining ? (
 				<JoinGame joining={joining} join={join} />
 			) : /* Joining as a spectator */ null}
