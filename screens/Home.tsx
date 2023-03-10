@@ -36,7 +36,7 @@ const HomeScreen = () => {
 		try {
 			setIsLoading(true)
 
-			const exists = gameExists(normalizedCode)
+			const exists = await gameExists(normalizedCode)
 			if (!exists)
 				throw new HttpError(ErrorCode.NotFound, 'Game not found')
 
