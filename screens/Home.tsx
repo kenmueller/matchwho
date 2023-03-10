@@ -84,7 +84,7 @@ const HomeScreen = () => {
 							autoCorrect={false}
 							maxLength={CODE_LENGTH}
 							placeholder="Game code"
-							placeholderTextColor={theme.yellowWithOpacity(0.5)}
+							placeholderTextColor={theme.whiteWithOpacity(0.5)}
 							onChangeText={setCode}
 							style={styles.joinInput}
 						/>
@@ -157,6 +157,7 @@ const styles = StyleSheet.create({
 		fontSize: 20,
 		fontWeight: '700',
 		color: theme.yellow,
+		backgroundColor: theme.yellowWithOpacity(0.1),
 		borderWidth: 2,
 		borderColor: theme.yellow,
 		borderRadius: 16,

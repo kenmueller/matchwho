@@ -1,5 +1,6 @@
 const theme = {
 	white: 'white',
+	whiteWithOpacity: (opacity: number) => `rgba(255, 255, 255, ${opacity})`,
 	yellow: '#fce49c',
 	yellowWithOpacity: (opacity: number) => `rgba(252, 228, 156, ${opacity})`,
 	blue: '#2e7cf6',

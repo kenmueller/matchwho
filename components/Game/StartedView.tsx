@@ -1,5 +1,5 @@
 import { useContext } from 'react'
-import { Text, StyleSheet, View } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 
 import GameContext from '../../lib/game/context'
 import GameTurnState from '../../lib/game/turn/state'

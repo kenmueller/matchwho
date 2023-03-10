@@ -36,7 +36,7 @@ const JoinGame = ({
 				ref={current => (input.current = current)}
 				value={name}
 				placeholder="Name"
-				placeholderTextColor={theme.yellowWithOpacity(0.5)}
+				placeholderTextColor={theme.whiteWithOpacity(0.5)}
 				maxLength={MAX_NAME_LENGTH}
 				onChangeText={setName}
 				style={styles.input}
@@ -65,6 +65,7 @@ const styles = StyleSheet.create({
 		fontSize: 20,
 		fontWeight: '700',
 		color: theme.yellow,
+		backgroundColor: theme.yellowWithOpacity(0.1),
 		borderWidth: 2,
 		borderColor: theme.yellow,
 		borderRadius: 16,

@@ -32,7 +32,7 @@ const GameAskQuestion = () => {
 			setAsking(false)
 			alertError(error)
 		}
-	}, [gameStream, setAsking])
+	}, [question, gameStream, setAsking])
 
 	useEffect(() => {
 		input.current?.focus()
@@ -44,6 +44,7 @@ const GameAskQuestion = () => {
 				ref={current => (input.current = current)}
 				value={question}
 				placeholder="Question"
+				placeholderTextColor={theme.whiteWithOpacity(0.5)}
 				maxLength={MAX_QUESTION_LENGTH}
 				multiline
 				numberOfLines={6}
@@ -62,10 +63,34 @@ const GameAskQuestion = () => {
 }
 
 const styles = StyleSheet.create({
-	root: {},
-	input: {},
-	ask: {},
-	askText: {},
+	root: {
+		alignItems: 'center'
+	},
+	input: {
+		width: 500,
+		paddingVertical: 8,
+		paddingHorizontal: 16,
+		fontSize: 20,
+		fontWeight: '700',
+		color: theme.yellow,
+		backgroundColor: theme.yellowWithOpacity(0.1),
+		borderWidth: 2,
+		borderColor: theme.yellow,
+		borderRadius: 16,
+		outlineStyle: 'none'
+	},
+	ask: {
+		marginTop: 12,
+		paddingVertical: 10,
+		paddingHorizontal: 20,
+		backgroundColor: theme.yellowWithOpacity(0.4),
+		borderRadius: 16
+	},
+	askText: {
+		fontSize: 20,
+		fontWeight: '700',
+		color: theme.yellow
+	},
 	disabled: {
 		opacity: 0.5
 	}
