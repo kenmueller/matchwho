@@ -1,5 +1,6 @@
 import { useState, useContext, useCallback, useEffect } from 'react'
 import {
+	Alert,
 	Keyboard,
 	KeyboardAvoidingView,
 	Platform,
@@ -19,6 +20,7 @@ import { DrawerNavigationProp } from '@react-navigation/drawer'
 import { StackNavigationProp } from '@react-navigation/stack'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { MaterialIcons } from '@expo/vector-icons'
+import Clipboard from '@react-native-clipboard/clipboard'
 
 import { AppScreens } from '../navigators/App'
 import theme from '../lib/theme'
@@ -76,6 +78,17 @@ const GameScreen = () => {
 		[code, navigation, setGame, setGameStream]
 	)
 
+	const copyCode = useCallback(() => {
+		Clipboard.setString(code)
+
+		Platform.OS === 'web'
+			? alert('Copied game code to clipboard')
+			: Alert.alert(
+					'Copied to clipboard',
+					'Share this code with your friends'
+			  )
+	}, [code])
+
 	const showPlayers = useCallback(() => {
 		navigation.openDrawer()
 	}, [navigation])
@@ -124,12 +137,21 @@ const GameScreen = () => {
 	useEffect(() => {
 		navigation.setOptions({
 			headerTitle: () => (
-				<Text style={styles.title}>
-					Game code: <Text style={styles.titleCode}>{code}</Text>
-				</Text>
+				<TouchableOpacity onPress={copyCode}>
+					<Text style={styles.title}>
+						{Platform.OS === 'web' && 'Game code: '}
+						<Text style={styles.titleCode}>
+							{code}
+							<MaterialIcons
+								name="content-copy"
+								style={styles.titleIcon}
+							/>
+						</Text>
+					</Text>
+				</TouchableOpacity>
 			)
 		})
-	}, [navigation, code])
+	}, [navigation, code, copyCode])
 
 	useEffect(() => {
 		navigation.setOptions({
@@ -186,16 +208,21 @@ const styles = StyleSheet.create({
 	title: {
 		fontSize: 20,
 		fontWeight: '700',
-		color: theme.white
-	},
-	titleCode: {
-		color: theme.yellow
-	},
-	players: {
-		marginLeft: 24,
+		color: theme.white,
 
 		// @ts-ignore
 		cursor: 'pointer'
+	},
+	titleCode: {
+		alignItems: 'center',
+		color: theme.yellow
+	},
+	titleIcon: {
+		marginLeft: 8,
+		fontSize: 20
+	},
+	players: {
+		marginLeft: 24
 	},
 	playersIcon: {
 		fontSize: 30,
