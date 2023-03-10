@@ -1,5 +1,5 @@
 import { useMemo, useContext } from 'react'
-import { Text, View, StyleSheet } from 'react-native'
+import { Text, View, StyleSheet, Platform } from 'react-native'
 
 import theme from '../../lib/theme'
 import GameContext from '../../lib/game/context'
@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
 		color: theme.white
 	},
 	status: {
-		fontSize: 30,
+		fontSize: Platform.OS === 'web' ? 30 : 24,
 		fontWeight: '900',
 		color: theme.white
 	}

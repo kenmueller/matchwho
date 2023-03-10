@@ -138,7 +138,7 @@ const GameScreen = () => {
 			headerTitle: () => (
 				<TouchableOpacity onPress={copyCode}>
 					<Text style={styles.title}>
-						<Text>Game code: </Text>
+						{Platform.OS === 'web' && 'Game code: '}
 						<Text style={styles.titleCode}>
 							{code}{' '}
 							<MaterialIcons

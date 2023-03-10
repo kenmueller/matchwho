@@ -73,6 +73,7 @@ const styles = StyleSheet.create({
 	start: {
 		justifyContent: 'center',
 		alignItems: 'center',
+		maxWidth: '100%',
 		width: 300,
 		paddingVertical: 16,
 		backgroundColor: theme.yellowWithOpacity(0.4),
