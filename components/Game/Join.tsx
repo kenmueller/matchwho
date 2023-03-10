@@ -20,11 +20,13 @@ const JoinGame = ({
 	const input = useRef<TextInput | null>(null)
 
 	const [name, setName] = useState('')
-	const disabled = !name
+
+	const normalizedName = name.trim()
+	const disabled = !normalizedName
 
 	const submit = useCallback(() => {
-		join(name)
-	}, [join, name])
+		join(normalizedName)
+	}, [join, normalizedName])
 
 	useEffect(() => {
 		input.current?.focus()

@@ -21,21 +21,22 @@ const GameAnswerQuestion = () => {
 	const input = useRef<TextInput | null>(null)
 
 	const [answer, setAnswer] = useState('')
+	const normalizedAnswer = answer.trim()
 
 	const [answering, setAnswering] = useState(false)
-	const disabled = !answer
+	const disabled = !normalizedAnswer
 
 	const submit = useCallback(() => {
 		try {
 			if (!gameStream) return
 
 			setAnswering(true)
-			gameStream.send({ key: 'answer', value: answer })
+			gameStream.send({ key: 'answer', value: normalizedAnswer })
 		} catch (error) {
 			setAnswering(false)
 			alertError(error)
 		}
-	}, [answer, gameStream, setAnswering])
+	}, [normalizedAnswer, gameStream, setAnswering])
 
 	useEffect(() => {
 		input.current?.focus()
@@ -45,17 +46,23 @@ const GameAnswerQuestion = () => {
 
 	return game.self?.answer ? (
 		<Message title="Waiting for other players to answer">
-			<Text>{game.turn?.question ?? '(error)'}</Text>
-			<Text>{game.self.answer}</Text>
+			<View style={styles.self}>
+				<Text style={styles.selfQuestion}>
+					{game.turn?.question ?? '(error)'}
+				</Text>
+				<Text style={styles.selfAnswer}>{game.self.answer}</Text>
+			</View>
 		</Message>
 	) : (
-		<View>
-			<Text>{game.turn?.player.name} asked</Text>
-			<Text>{game.turn?.question ?? '(error)'}</Text>
+		<View style={styles.root}>
+			<Text style={styles.asker}>{game.turn?.player.name} asked</Text>
+			<Text style={styles.question}>
+				{game.turn?.question ?? '(error)'}
+			</Text>
 			<TextInput
 				ref={current => (input.current = current)}
 				value={answer}
-				placeholder="Question"
+				placeholder="Answer"
 				placeholderTextColor={theme.whiteWithOpacity(0.5)}
 				maxLength={MAX_ANSWER_LENGTH}
 				multiline
@@ -77,6 +84,74 @@ const GameAnswerQuestion = () => {
 	)
 }
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+	self: {
+		alignItems: 'flex-start',
+		width: '100%',
+		marginTop: 12,
+		paddingTop: 12,
+		borderTopWidth: 2,
+		borderTopColor: theme.gray
+	},
+	selfQuestion: {
+		fontSize: 22,
+		fontWeight: '700',
+		color: theme.white
+	},
+	selfAnswer: {
+		marginTop: 8,
+		fontSize: 18,
+		fontWeight: '700',
+		color: theme.white,
+		opacity: 0.5
+	},
+	root: {
+		alignItems: 'center'
+	},
+	asker: {
+		alignSelf: 'flex-start',
+		fontSize: 18,
+		fontWeight: '700',
+		color: theme.white,
+		opacity: 0.5
+	},
+	question: {
+		alignSelf: 'flex-start',
+		marginTop: 8,
+		fontSize: 22,
+		fontWeight: '700',
+		color: theme.white
+	},
+	input: {
+		maxWidth: '100%',
+		width: 500,
+		marginTop: 16,
+		paddingVertical: 8,
+		paddingHorizontal: 16,
+		fontSize: 20,
+		fontWeight: '700',
+		color: theme.yellow,
+		backgroundColor: theme.yellowWithOpacity(0.1),
+		borderWidth: 2,
+		borderColor: theme.yellow,
+		borderRadius: 16,
+		outlineStyle: 'none'
+	},
+	submit: {
+		marginTop: 12,
+		paddingVertical: 10,
+		paddingHorizontal: 20,
+		backgroundColor: theme.yellowWithOpacity(0.4),
+		borderRadius: 16
+	},
+	submitText: {
+		fontSize: 20,
+		fontWeight: '700',
+		color: theme.yellow
+	},
+	disabled: {
+		opacity: 0.5
+	}
+})
 
 export default GameAnswerQuestion

@@ -18,21 +18,22 @@ const GameAskQuestion = () => {
 	const input = useRef<TextInput | null>(null)
 
 	const [question, setQuestion] = useState('')
+	const normalizedQuestion = question.trim()
 
 	const [asking, setAsking] = useState(false)
-	const disabled = !question
+	const disabled = !normalizedQuestion
 
 	const ask = useCallback(() => {
 		try {
 			if (!gameStream) return
 
 			setAsking(true)
-			gameStream.send({ key: 'question', value: question })
+			gameStream.send({ key: 'question', value: normalizedQuestion })
 		} catch (error) {
 			setAsking(false)
 			alertError(error)
 		}
-	}, [question, gameStream, setAsking])
+	}, [normalizedQuestion, gameStream, setAsking])
 
 	useEffect(() => {
 		input.current?.focus()
