@@ -20,7 +20,7 @@ import { DrawerNavigationProp } from '@react-navigation/drawer'
 import { StackNavigationProp } from '@react-navigation/stack'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { MaterialIcons } from '@expo/vector-icons'
-import Clipboard from '@react-native-clipboard/clipboard'
+import * as Clipboard from 'expo-clipboard'
 
 import { AppScreens } from '../navigators/App'
 import theme from '../lib/theme'
@@ -78,8 +78,8 @@ const GameScreen = () => {
 		[code, navigation, setGame, setGameStream]
 	)
 
-	const copyCode = useCallback(() => {
-		Clipboard.setString(code)
+	const copyCode = useCallback(async () => {
+		await Clipboard.setStringAsync(code)
 
 		Platform.OS === 'web'
 			? alert('Copied game code to clipboard')
@@ -101,7 +101,6 @@ const GameScreen = () => {
 		gameMeta(code)
 			.then(setMeta)
 			.catch(() => {
-				console.log('catch')
 				alertError(
 					new HttpError(ErrorCode.NotFound, 'Invalid game code')
 				)
@@ -139,9 +138,9 @@ const GameScreen = () => {
 			headerTitle: () => (
 				<TouchableOpacity onPress={copyCode}>
 					<Text style={styles.title}>
-						{Platform.OS === 'web' && 'Game code: '}
+						<Text>Game code: </Text>
 						<Text style={styles.titleCode}>
-							{code}
+							{code}{' '}
 							<MaterialIcons
 								name="content-copy"
 								style={styles.titleIcon}
@@ -218,7 +217,6 @@ const styles = StyleSheet.create({
 		color: theme.yellow
 	},
 	titleIcon: {
-		marginLeft: 8,
 		fontSize: 20
 	},
 	players: {
