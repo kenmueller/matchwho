@@ -14,7 +14,7 @@ const GameMessage = ({
 	description?: string
 	children?: ReactNode
 }) => (
-	<View>
+	<View style={styles.root}>
 		<Text style={[styles.title, error && styles.error]}>{title}</Text>
 		{description && (
 			<Text style={[styles.description, error && styles.error]}>
@@ -26,6 +26,9 @@ const GameMessage = ({
 )
 
 const styles = StyleSheet.create({
+	root: {
+		alignItems: 'center'
+	},
 	title: {
 		fontSize: 24,
 		fontWeight: '700',
@@ -34,7 +37,9 @@ const styles = StyleSheet.create({
 	description: {
 		marginTop: 12,
 		fontSize: 18,
-		fontWeight: '700'
+		fontWeight: '700',
+		color: theme.white,
+		opacity: 0.5
 	},
 	error: {
 		color: theme.red
