@@ -1,5 +1,13 @@
 import { useState, useContext, useCallback, useEffect } from 'react'
-import { Platform, StyleSheet, Text, View } from 'react-native'
+import {
+	Keyboard,
+	KeyboardAvoidingView,
+	Platform,
+	StyleSheet,
+	Text,
+	TouchableWithoutFeedback,
+	View
+} from 'react-native'
 import {
 	useRoute,
 	RouteProp,
@@ -153,15 +161,24 @@ const GameScreen = () => {
 	}, [navigation, close])
 
 	return (
-		<View style={styles.root}>
-			{meta ? (
-				gameStream && game ? (
-					<GameView />
-				) : meta.state === GameState.Joining ? (
-					<JoinGame joining={joining} join={join} />
-				) : /* Joining as a spectator */ null
-			) : /* Loading */ null}
-		</View>
+		<KeyboardAvoidingView
+			behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+			style={styles.root}
+		>
+			<TouchableWithoutFeedback
+				onPress={Platform.OS === 'web' ? undefined : Keyboard.dismiss}
+			>
+				<View style={styles.container}>
+					{meta ? (
+						gameStream && game ? (
+							<GameView />
+						) : meta.state === GameState.Joining ? (
+							<JoinGame joining={joining} join={join} />
+						) : /* Joining as a spectator */ null
+					) : /* Loading */ null}
+				</View>
+			</TouchableWithoutFeedback>
+		</KeyboardAvoidingView>
 	)
 }
 
@@ -197,9 +214,13 @@ const styles = StyleSheet.create({
 	root: {
 		width: '100%',
 		height: '100%',
-		justifyContent: 'center',
-		alignItems: 'center',
 		backgroundColor: theme.dark
+	},
+	container: {
+		width: '100%',
+		height: '100%',
+		justifyContent: 'center',
+		alignItems: 'center'
 	}
 })
 

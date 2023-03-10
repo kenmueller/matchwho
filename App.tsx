@@ -3,7 +3,8 @@ import {
 	/* LinkingOptions, */ NavigationContainer
 } from '@react-navigation/native'
 
-import AppNavigator, { AppScreens } from './navigators/App'
+import AppNavigator /*, { AppScreens } */ from './navigators/App'
+import { SafeAreaProvider } from 'react-native-safe-area-context'
 
 // const linking: LinkingOptions<AppScreens> = {
 // 	prefixes: ['https://matchwho.io'],
@@ -16,10 +17,12 @@ import AppNavigator, { AppScreens } from './navigators/App'
 // }
 
 const App = () => (
-	<NavigationContainer /* linking={linking} */>
-		<StatusBar style="light" />
-		<AppNavigator />
-	</NavigationContainer>
+	<SafeAreaProvider>
+		<NavigationContainer /* linking={linking} */>
+			<StatusBar style="light" />
+			<AppNavigator />
+		</NavigationContainer>
+	</SafeAreaProvider>
 )
 
 export default App
