@@ -17,6 +17,7 @@ import MAX_ANSWER_LENGTH from '../../lib/game/answer'
 const GameAnswerQuestion = () => {
 	const [gameStream] = useContext(GameStreamContext)
 	const [game] = useContext(GameContext)
+	if (!(gameStream && game)) return null
 
 	const input = useRef<TextInput | null>(null)
 
@@ -28,8 +29,6 @@ const GameAnswerQuestion = () => {
 
 	const submit = useCallback(() => {
 		try {
-			if (!gameStream) return
-
 			setAnswering(true)
 			gameStream.send({ key: 'answer', value: normalizedAnswer })
 		} catch (error) {
@@ -41,8 +40,6 @@ const GameAnswerQuestion = () => {
 	useEffect(() => {
 		input.current?.focus()
 	}, [input])
-
-	if (!game) return null
 
 	return game.self?.answer ? (
 		<Message title="Waiting for other players to answer">

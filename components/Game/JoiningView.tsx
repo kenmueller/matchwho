@@ -12,13 +12,12 @@ import alertError from '../../lib/error/alert'
 const GameJoiningView = () => {
 	const [gameStream] = useContext(GameStreamContext)
 	const [game] = useContext(GameContext)
+	if (!(gameStream && game)) return null
 
 	const [started, setStarted] = useState(false)
 
 	const start = useCallback(() => {
 		try {
-			if (!gameStream) return
-
 			setStarted(true)
 			gameStream.send({ key: 'start' })
 		} catch (error) {
@@ -26,8 +25,6 @@ const GameJoiningView = () => {
 			alertError(error)
 		}
 	}, [gameStream, setStarted])
-
-	if (!(gameStream && game)) return null
 
 	const leader = game.leader
 	const isLeader = leader && leader.id === game.self?.id

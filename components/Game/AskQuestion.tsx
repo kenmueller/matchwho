@@ -14,6 +14,7 @@ import MAX_QUESTION_LENGTH from '../../lib/game/question'
 
 const GameAskQuestion = () => {
 	const [gameStream] = useContext(GameStreamContext)
+	if (!gameStream) return null
 
 	const input = useRef<TextInput | null>(null)
 
@@ -25,8 +26,6 @@ const GameAskQuestion = () => {
 
 	const ask = useCallback(() => {
 		try {
-			if (!gameStream) return
-
 			setAsking(true)
 			gameStream.send({ key: 'question', value: normalizedQuestion })
 		} catch (error) {
