@@ -131,11 +131,12 @@ const GameMatchAnswers = () => {
 			<Text style={styles.question}>
 				{game.turn?.question ?? '(error)'}
 			</Text>
-			<View style={[styles.columns, disabled && styles.matchingDisabled]}>
+			<View
+				pointerEvents={disabled ? 'none' : 'auto'}
+				style={styles.columns}
+			>
 				<View style={styles.players}>
-					<Text style={[styles.title, styles.playersTitle]}>
-						Players
-					</Text>
+					<Text style={styles.title}>Players</Text>
 					{players.map(player => (
 						<View
 							key={player.id}
@@ -151,9 +152,7 @@ const GameMatchAnswers = () => {
 					))}
 				</View>
 				<View style={styles.answers}>
-					<Text style={[styles.title, styles.answersTitle]}>
-						Answers
-					</Text>
+					<Text style={styles.title}>Answers</Text>
 					{answers.map((answer, index) => (
 						<View
 							key={index}
@@ -169,22 +168,100 @@ const GameMatchAnswers = () => {
 					))}
 				</View>
 			</View>
+			{correct ? (
+				<Text style={styles.correct}>
+					Showing correct answers ({correct.count}/
+					{correct.matches.length})
+				</Text>
+			) : disabled && current ? (
+				<Text style={styles.matching}>
+					Waiting for {current.name} to finish matching
+				</Text>
+			) : null}
 			{myTurn && (
 				<TouchableOpacity
 					disabled={submitLoading || submitDisabled}
 					onPress={correct ? done : matched}
-					styles={[
+					style={[
+						styles.submit,
 						(submitLoading || submitDisabled) &&
 							styles.submitDisabled
 					]}
 				>
-					<Text>{correct ? 'Done' : 'Show Correct Matches'}</Text>
+					<Text style={styles.submitText}>
+						{correct ? 'Done' : 'Show Correct Matches'}
+					</Text>
 				</TouchableOpacity>
 			)}
 		</View>
 	)
 }
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+	root: {
+		alignItems: 'center'
+	},
+	question: {
+		alignSelf: 'flex-start',
+		fontSize: 22,
+		fontWeight: '700',
+		color: theme.white,
+		opacity: 0.5
+	},
+	columns: {
+		flexDirection: 'row',
+		alignItems: 'stretch',
+		marginTop: 16
+	},
+	players: {
+		alignItems: 'flex-end'
+	},
+	answers: {
+		alignItems: 'flex-start',
+		marginLeft: 100
+	},
+	title: {
+		fontSize: 22,
+		fontWeight: '700',
+		color: theme.white
+	},
+	node: {
+		marginTop: 16,
+		paddingVertical: 8,
+		paddingHorizontal: 16,
+		backgroundColor: theme.darkGray,
+		borderRadius: 8,
+
+		// @ts-ignore
+		cursor: 'pointer'
+	},
+	nodeText: {
+		fontSize: 16,
+		fontWeight: '700',
+		color: theme.white
+	},
+	correct: {},
+	matching: {
+		marginTop: 28,
+		fontSize: 16,
+		fontWeight: '700',
+		color: theme.yellow
+	},
+	submit: {
+		marginTop: 28,
+		paddingVertical: 10,
+		paddingHorizontal: 20,
+		backgroundColor: theme.yellowWithOpacity(0.4),
+		borderRadius: 16
+	},
+	submitText: {
+		fontSize: 20,
+		fontWeight: '700',
+		color: theme.yellow
+	},
+	submitDisabled: {
+		opacity: 0.5
+	}
+})
 
 export default GameMatchAnswers
