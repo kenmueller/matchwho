@@ -132,8 +132,10 @@ const GameMatchAnswers = () => {
 				{game.turn?.question ?? '(error)'}
 			</Text>
 			<View style={[styles.columns, disabled && styles.matchingDisabled]}>
-				<View>
-					<Text>Players</Text>
+				<View style={styles.players}>
+					<Text style={[styles.title, styles.playersTitle]}>
+						Players
+					</Text>
 					{players.map(player => (
 						<View
 							key={player.id}
@@ -142,13 +144,16 @@ const GameMatchAnswers = () => {
 									? (elements.current[player.id] = current)
 									: delete elements.current[player.id]
 							}}
+							style={styles.node}
 						>
-							<Text>{player.name}</Text>
+							<Text style={styles.nodeText}>{player.name}</Text>
 						</View>
 					))}
 				</View>
-				<View>
-					<Text>Answers</Text>
+				<View style={styles.answers}>
+					<Text style={[styles.title, styles.answersTitle]}>
+						Answers
+					</Text>
 					{answers.map((answer, index) => (
 						<View
 							key={index}
@@ -157,8 +162,9 @@ const GameMatchAnswers = () => {
 									? (elements.current[index] = current)
 									: delete elements.current[index]
 							}}
+							style={styles.node}
 						>
-							<Text>{answer}</Text>
+							<Text style={styles.nodeText}>{answer}</Text>
 						</View>
 					))}
 				</View>
