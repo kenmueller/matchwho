@@ -82,6 +82,7 @@ const HomeScreen = () => {
 						<TextInput
 							value={code}
 							autoCorrect={false}
+							autoCapitalize="none"
 							maxLength={CODE_LENGTH}
 							placeholder="Game code"
 							placeholderTextColor={theme.whiteWithOpacity(0.5)}
