@@ -1,4 +1,4 @@
-import { useMemo, useContext } from 'react'
+import { useContext } from 'react'
 import { Text, View, StyleSheet, Platform } from 'react-native'
 
 import theme from '../../lib/theme'
@@ -12,9 +12,7 @@ import CompletedView from './CompletedView'
 
 const GameView = () => {
 	const [game] = useContext(GameContext)
-	const status = useMemo(() => game && gameStatus(game), [game])
-
-	if (!(game && status)) return null
+	if (!game) return null
 
 	return (
 		<View style={styles.root}>
@@ -24,7 +22,7 @@ const GameView = () => {
 					Round {game.round}/{ROUNDS}
 				</Text>
 			)}
-			<Text style={styles.status}>{status}</Text>
+			<Text style={styles.status}>{gameStatus(game)}</Text>
 			{game.state === GameState.Joining && <JoiningView />}
 			{game.state === GameState.Started && <StartedView />}
 			{game.state === GameState.Completed && <CompletedView />}
