@@ -99,6 +99,7 @@ const GameMatchAnswers = () => {
 		(index: number) => (event: PointerEvent | GestureResponderEvent) => {
 			setPointFromEvent(event)
 			answerLink === null ? setAnswerLink(index) : resetLink()
+			console.log('answerLink', index)
 		},
 		[answerLink, setPointFromEvent, setAnswerLink, resetLink]
 	)
@@ -181,6 +182,8 @@ const GameMatchAnswers = () => {
 							}}
 							onPointerDown={playerLinkCallback(player.id)}
 							onTouchStart={playerLinkCallback(player.id)}
+							onPointerUp={playerLinkCallback(player.id)}
+							onTouchEnd={playerLinkCallback(player.id)}
 							style={[
 								styles.node,
 								{
@@ -205,6 +208,8 @@ const GameMatchAnswers = () => {
 							}}
 							onPointerDown={answerLinkCallback(index)}
 							onTouchStart={answerLinkCallback(index)}
+							onPointerUp={answerLinkCallback(index)}
+							onTouchEnd={answerLinkCallback(index)}
 							style={[
 								styles.node,
 								{
