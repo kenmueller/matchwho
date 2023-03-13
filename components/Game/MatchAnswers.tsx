@@ -128,6 +128,53 @@ const GameMatchAnswers = () => {
 		[answers, setAnswerLink, resetLink]
 	)
 
+	const onAnswerStart = useCallback(
+		(answer: number) =>
+			({ nativeEvent: { pageX, pageY } }: GestureResponderEvent) => {
+				setStart({ x: pageX, y: pageY })
+				setEnd(null)
+
+				answerLink === null ? setAnswerLink(answer) : resetLink()
+			},
+		[setStart, setEnd, answerLink, setAnswerLink, resetLink]
+	)
+
+	const onAnswerMove = useCallback(
+		(_answer: number) =>
+			({ nativeEvent: { pageX, pageY } }: GestureResponderEvent) => {
+				setEnd({ x: pageX, y: pageY })
+			},
+		[setEnd]
+	)
+
+	const onAnswerEnd = useCallback(
+		(_answer: number) =>
+			async ({
+				nativeEvent: { pageX, pageY }
+			}: GestureResponderEvent) => {
+				const point: Point = { x: pageX, y: pageY }
+
+				const map = await Promise.all(
+					players.map(
+						async player =>
+							[
+								player.id,
+								await getBounds(elements.current[player.id])
+							] as const
+					)
+				)
+
+				for (const [player, bounds] of map)
+					if (boundsContains(bounds, point)) {
+						setPlayerLink(player)
+						return
+					}
+
+				resetLink()
+			},
+		[players, setPlayerLink, resetLink]
+	)
+
 	const unmatch = useCallback(
 		(player: string) => {
 			try {
@@ -226,9 +273,9 @@ const GameMatchAnswers = () => {
 									: delete elements.current[index]
 							}}
 							onStartShouldSetResponder={shouldSetResponder}
-							// onResponderStart={onAnswerStart(index)}
-							// onResponderMove={onAnswerMove(index)}
-							// onResponderEnd={onAnswerEnd(index)}
+							onResponderStart={onAnswerStart(index)}
+							onResponderMove={onAnswerMove(index)}
+							onResponderEnd={onAnswerEnd(index)}
 							style={[
 								styles.node,
 								{
