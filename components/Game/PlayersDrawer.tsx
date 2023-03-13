@@ -23,23 +23,18 @@ const GamePlayersDrawer = () => {
 
 	return (
 		<ScrollView
+			bounces={false}
 			contentContainerStyle={[
-				styles.rootContainer,
-				{
-					height:
-						Platform.OS === 'web'
-							? /* Fixes scrollview height to parent height */
-							  0
-							: dimensions.height
-				}
-			]}
-			style={[
-				styles.root,
+				styles.scrollContainer,
 				{
 					paddingTop: Math.max(paddingVertical, insets.top),
 					paddingBottom: Math.max(paddingVertical, insets.bottom)
-				}
+				},
+
+				// Fixes scrollview height to parent height
+				Platform.OS === 'web' && { height: 0 }
 			]}
+			style={[styles.scroll]}
 		>
 			<View style={styles.inner}>
 				<Text style={styles.title}>Players</Text>
@@ -52,10 +47,11 @@ const GamePlayersDrawer = () => {
 }
 
 const styles = StyleSheet.create({
-	rootContainer: {
-		width: '100%'
+	scrollContainer: {
+		width: '100%',
+		flexGrow: 1
 	},
-	root: {
+	scroll: {
 		width: '100%',
 		height: '100%',
 		paddingHorizontal: 24,
