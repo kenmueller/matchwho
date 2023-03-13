@@ -11,29 +11,31 @@ import {
 	StyleSheet,
 	View,
 	TouchableOpacity,
-	PointerEvent,
 	GestureResponderEvent
 } from 'react-native'
 import { Portal } from '@gorhom/portal'
 
 import GameContext from '../../lib/game/context'
 import GameStreamContext from '../../lib/game/context/stream'
-import RootEventsContext from '../../lib/rootEvents/context'
 import theme from '../../lib/theme'
 import alertError from '../../lib/error/alert'
 import Point from '../../lib/point'
+import Link from './Link/Base'
 import MatchLink from './Link/Match'
-import MouseLink from './Link/Mouse'
+import getBounds from '../../lib/bounds/get'
+import boundsContains from '../../lib/bounds/contains'
+
+const shouldSetResponder = () => true
 
 const GameMatchAnswers = () => {
 	const [gameStream] = useContext(GameStreamContext)
 	const [game] = useContext(GameContext)
 	if (!(gameStream && game)) return null
 
-	const { onPointerUp } = useContext(RootEventsContext)
-
 	const elements = useRef<Record<string | number, View>>({})
-	const [point, setPoint] = useState<Point | null>(null)
+
+	const [start, setStart] = useState<Point | null>(null)
+	const [end, setEnd] = useState<Point | null>(null)
 
 	const [playerLink, setPlayerLink] = useState<string | null>(null)
 	const [answerLink, setAnswerLink] = useState<number | null>(null)
@@ -79,29 +81,51 @@ const GameMatchAnswers = () => {
 		setAnswerLink(null)
 	}, [setPlayerLink, setAnswerLink])
 
-	const setPointFromEvent = useCallback(
-		(event: PointerEvent | GestureResponderEvent) => {
-			event.stopPropagation()
-			setPoint({ x: event.nativeEvent.pageX, y: event.nativeEvent.pageY })
-		},
-		[setPoint]
+	const onPlayerStart = useCallback(
+		(player: string) =>
+			({ nativeEvent: { pageX, pageY } }: GestureResponderEvent) => {
+				setStart({ x: pageX, y: pageY })
+				setEnd(null)
+
+				playerLink === null ? setPlayerLink(player) : resetLink()
+			},
+		[setStart, setEnd, playerLink, setPlayerLink, resetLink]
 	)
 
-	const playerLinkCallback = useCallback(
-		(player: string) => (event: PointerEvent | GestureResponderEvent) => {
-			setPointFromEvent(event)
-			playerLink === null ? setPlayerLink(player) : resetLink()
-		},
-		[playerLink, setPointFromEvent, setPlayerLink, resetLink]
+	const onPlayerMove = useCallback(
+		(_player: string) =>
+			({ nativeEvent: { pageX, pageY } }: GestureResponderEvent) => {
+				setEnd({ x: pageX, y: pageY })
+			},
+		[setEnd]
 	)
 
-	const answerLinkCallback = useCallback(
-		(index: number) => (event: PointerEvent | GestureResponderEvent) => {
-			setPointFromEvent(event)
-			answerLink === null ? setAnswerLink(index) : resetLink()
-			console.log('answerLink', index)
-		},
-		[answerLink, setPointFromEvent, setAnswerLink, resetLink]
+	const onPlayerEnd = useCallback(
+		(_player: string) =>
+			async ({
+				nativeEvent: { pageX, pageY }
+			}: GestureResponderEvent) => {
+				const point: Point = { x: pageX, y: pageY }
+
+				const map = await Promise.all(
+					answers.map(
+						async (_answer, index) =>
+							[
+								index,
+								await getBounds(elements.current[index])
+							] as const
+					)
+				)
+
+				for (const [index, bounds] of map)
+					if (boundsContains(bounds, point)) {
+						setAnswerLink(index)
+						return
+					}
+
+				resetLink()
+			},
+		[answers, setAnswerLink, resetLink]
 	)
 
 	const unmatch = useCallback(
@@ -150,11 +174,6 @@ const GameMatchAnswers = () => {
 		}
 	}, [gameStream, playerLink, answerLink, resetLink])
 
-	useEffect(() => {
-		if (disabled) return
-		return onPointerUp(resetLink)
-	}, [disabled, resetLink])
-
 	const [elementsLoaded, setElementsLoaded] = useState(false)
 
 	useEffect(() => {
@@ -180,10 +199,10 @@ const GameMatchAnswers = () => {
 									? (elements.current[player.id] = current)
 									: delete elements.current[player.id]
 							}}
-							onPointerDown={playerLinkCallback(player.id)}
-							onTouchStart={playerLinkCallback(player.id)}
-							onPointerUp={playerLinkCallback(player.id)}
-							onTouchEnd={playerLinkCallback(player.id)}
+							onStartShouldSetResponder={shouldSetResponder}
+							onResponderStart={onPlayerStart(player.id)}
+							onResponderMove={onPlayerMove(player.id)}
+							onResponderEnd={onPlayerEnd(player.id)}
 							style={[
 								styles.node,
 								{
@@ -206,10 +225,10 @@ const GameMatchAnswers = () => {
 									? (elements.current[index] = current)
 									: delete elements.current[index]
 							}}
-							onPointerDown={answerLinkCallback(index)}
-							onTouchStart={answerLinkCallback(index)}
-							onPointerUp={answerLinkCallback(index)}
-							onTouchEnd={answerLinkCallback(index)}
+							onStartShouldSetResponder={shouldSetResponder}
+							// onResponderStart={onAnswerStart(index)}
+							// onResponderMove={onAnswerMove(index)}
+							// onResponderEnd={onAnswerEnd(index)}
 							style={[
 								styles.node,
 								{
@@ -250,24 +269,20 @@ const GameMatchAnswers = () => {
 			)}
 			<Portal>
 				{elementsLoaded &&
-					(correct?.matches ?? matches).map(
-						([player, answer]) =>
-							player in elements.current &&
-							answer in elements.current && (
-								<MatchLink
-									key={player}
-									from={elements.current[player]}
-									to={elements.current[answer]}
-									onPress={
-										disabled
-											? undefined
-											: () => unmatch(player)
-									}
-								/>
-							)
-					)}
-
-				{!disabled && dragging && point && <MouseLink from={point} />}
+					(correct?.matches ?? matches).map(([player, answer]) => (
+						<MatchLink
+							key={player}
+							from={elements.current[player]}
+							to={elements.current[answer]}
+							onPress={
+								disabled ? undefined : () => unmatch(player)
+							}
+						/>
+					))}
+				{!disabled && dragging && start && end && (
+					// Link to mouse cursor
+					<Link from={start} to={end} />
+				)}
 			</Portal>
 		</View>
 	)

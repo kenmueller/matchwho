@@ -8,7 +8,7 @@ import {
 import Point from '../../../lib/point'
 import theme from '../../../lib/theme'
 
-const RawLink = ({
+const Link = ({
 	from,
 	to,
 	onPress
@@ -54,4 +54,4 @@ const styles = StyleSheet.create({
 	}
 })
 
-export default RawLink
+export default Link

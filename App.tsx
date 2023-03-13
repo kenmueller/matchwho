@@ -5,7 +5,6 @@ import {
 import { PortalProvider } from '@gorhom/portal'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 
-import RootEventsProvider from './components/RootEventsProvider'
 import AppNavigator /*, { AppScreens } */ from './navigators/App'
 
 // const linking: LinkingOptions<AppScreens> = {
@@ -19,16 +18,14 @@ import AppNavigator /*, { AppScreens } */ from './navigators/App'
 // }
 
 const App = () => (
-	<RootEventsProvider>
-		<PortalProvider>
-			<SafeAreaProvider>
-				<NavigationContainer /* linking={linking} */>
-					<StatusBar style="light" />
-					<AppNavigator />
-				</NavigationContainer>
-			</SafeAreaProvider>
-		</PortalProvider>
-	</RootEventsProvider>
+	<PortalProvider>
+		<SafeAreaProvider>
+			<NavigationContainer /* linking={linking} */>
+				<StatusBar style="light" />
+				<AppNavigator />
+			</NavigationContainer>
+		</SafeAreaProvider>
+	</PortalProvider>
 )
 
 export default App

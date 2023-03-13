@@ -7,7 +7,7 @@ import {
 } from 'react-native'
 
 import Point from '../../../lib/point'
-import RawLink from './Raw'
+import Link from './Base'
 
 /** How far away the link is from the node. */
 const SPACING = 8
@@ -44,7 +44,7 @@ const MatchLink = ({
 
 	return (
 		fromPoint &&
-		toPoint && <RawLink from={fromPoint} to={toPoint} onPress={onPress} />
+		toPoint && <Link from={fromPoint} to={toPoint} onPress={onPress} />
 	)
 }
 
