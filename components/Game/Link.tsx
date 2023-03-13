@@ -1,7 +1,7 @@
 import { GestureResponderEvent, View, StyleSheet } from 'react-native'
 
-import Point from '../../../lib/point'
-import theme from '../../../lib/theme'
+import Point from '../../lib/point'
+import theme from '../../lib/theme'
 
 const shouldSetResponder = () => true
 

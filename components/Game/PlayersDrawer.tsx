@@ -1,12 +1,5 @@
 import { useContext } from 'react'
-import {
-	View,
-	StyleSheet,
-	Platform,
-	Text,
-	ScrollView,
-	useWindowDimensions
-} from 'react-native'
+import { View, StyleSheet, Platform, Text, ScrollView } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 import GameContext from '../../lib/game/context'
@@ -16,10 +9,10 @@ import PlayersDrawerRow from './PlayersDrawerRow'
 const paddingVertical = 18
 
 const GamePlayersDrawer = () => {
-	const dimensions = useWindowDimensions()
 	const insets = useSafeAreaInsets()
 
 	const [game] = useContext(GameContext)
+	if (!game) return null
 
 	return (
 		<ScrollView
@@ -38,7 +31,7 @@ const GamePlayersDrawer = () => {
 		>
 			<View style={styles.inner}>
 				<Text style={styles.title}>Players</Text>
-				{game?.players.map(player => (
+				{game.players.map(player => (
 					<PlayersDrawerRow key={player.id} player={player} />
 				))}
 			</View>

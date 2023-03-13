@@ -1,5 +1,6 @@
-import { useContext } from 'react'
-import { Text, View, StyleSheet, Platform } from 'react-native'
+import { useContext, useState } from 'react'
+import { Text, View, StyleSheet, Platform, ScrollView } from 'react-native'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 import theme from '../../lib/theme'
 import GameContext from '../../lib/game/context'
@@ -9,33 +10,96 @@ import ROUNDS from '../../lib/game/rounds'
 import JoiningView from './JoiningView'
 import StartedView from './StartedView'
 import CompletedView from './CompletedView'
+import GameTurnState from '../../lib/game/turn/state'
+import ScrollEnabledContext from '../../lib/scrollEnabled/context'
+
+const shouldSetResponder = () => true
+const paddingVertical = 24
 
 const GameView = () => {
+	const insets = useSafeAreaInsets()
+
 	const [game] = useContext(GameContext)
 	if (!game) return null
 
-	return (
-		<View style={styles.root}>
-			{!game.self && <Text style={styles.spectating}>spectating</Text>}
+	/** If matching answers. */
+	const hasScrollView =
+		game.state === GameState.Started &&
+		game.turn?.state === GameTurnState.Matching
+
+	const [scrollEnabled, setScrollEnabled] = useState(true)
+
+	const internal = (
+		<>
 			{game.state === GameState.Started && (
 				<Text style={styles.rounds}>
 					Round {game.round}/{ROUNDS}
 				</Text>
 			)}
-			<Text style={styles.status}>{gameStatus(game)}</Text>
+			<Text
+				style={[styles.status, hasScrollView && { marginBottom: 20 }]}
+			>
+				{gameStatus(game)}
+			</Text>
 			{game.state === GameState.Joining && <JoiningView />}
 			{game.state === GameState.Started && <StartedView />}
 			{game.state === GameState.Completed && <CompletedView />}
-		</View>
+		</>
+	)
+
+	return (
+		<>
+			{!game.self && <Text style={styles.spectating}>spectating</Text>}
+			{hasScrollView ? (
+				<ScrollView
+					bounces={false}
+					scrollEnabled={Platform.OS === 'web' || scrollEnabled}
+					contentContainerStyle={[
+						styles.scrollContainer,
+						{
+							paddingTop: paddingVertical,
+							paddingBottom: Math.max(
+								paddingVertical,
+								insets.bottom
+							)
+						}
+					]}
+					style={styles.scroll}
+				>
+					<View
+						onStartShouldSetResponder={
+							scrollEnabled ? shouldSetResponder : undefined
+						}
+						style={styles.container}
+					>
+						<ScrollEnabledContext.Provider
+							value={[scrollEnabled, setScrollEnabled]}
+						>
+							{internal}
+						</ScrollEnabledContext.Provider>
+					</View>
+				</ScrollView>
+			) : (
+				<View style={[styles.container, { paddingVertical }]}>
+					{internal}
+				</View>
+			)}
+		</>
 	)
 }
 
 const styles = StyleSheet.create({
-	root: {
-		position: 'relative',
+	scrollContainer: {
+		width: '100%',
+		flexGrow: 1
+	},
+	scroll: {
+		width: '100%',
+		height: '100%'
+	},
+	container: {
 		width: '100%',
 		height: '100%',
-		paddingVertical: 24,
 		paddingHorizontal: 32
 	},
 	spectating: {
