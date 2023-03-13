@@ -305,6 +305,7 @@ const GameMatchAnswers = () => {
 					onPress={correct ? done : matched}
 					style={[
 						styles.submit,
+						correct && styles.submitCorrect,
 						(submitLoading || submitDisabled) &&
 							styles.submitDisabled
 					]}
@@ -375,7 +376,16 @@ const styles = StyleSheet.create({
 		fontWeight: '700',
 		color: theme.white
 	},
-	correct: {},
+	correct: {
+		// Must add to submit.marginTop to prevent layout from shifting
+		marginTop: 12,
+		height: 20,
+		marginBottom: 4,
+
+		fontSize: 16,
+		fontWeight: '700',
+		color: theme.yellow
+	},
 	matching: {
 		marginTop: 28,
 		fontSize: 16,
@@ -383,7 +393,7 @@ const styles = StyleSheet.create({
 		color: theme.yellow
 	},
 	submit: {
-		marginTop: 28,
+		marginTop: 36,
 		paddingVertical: 10,
 		paddingHorizontal: 20,
 		backgroundColor: theme.yellowWithOpacity(0.4),
@@ -393,6 +403,9 @@ const styles = StyleSheet.create({
 		fontSize: 20,
 		fontWeight: '700',
 		color: theme.yellow
+	},
+	submitCorrect: {
+		marginTop: 0
 	},
 	submitDisabled: {
 		opacity: 0.5
