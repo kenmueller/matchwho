@@ -161,7 +161,7 @@ const styles = StyleSheet.create({
 		borderWidth: 2,
 		borderColor: theme.yellow,
 		borderRadius: 16,
-		outlineStyle: 'none'
+		...(Platform.OS === 'web' ? { outlineStyle: 'none' } : {})
 	},
 	join: {
 		marginTop: 16,

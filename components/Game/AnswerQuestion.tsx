@@ -4,7 +4,8 @@ import {
 	StyleSheet,
 	TextInput,
 	View,
-	TouchableOpacity
+	TouchableOpacity,
+	Platform
 } from 'react-native'
 
 import GameStreamContext from '../../lib/game/context/stream'
@@ -133,7 +134,7 @@ const styles = StyleSheet.create({
 		borderColor: theme.yellow,
 		borderRadius: 16,
 		textAlignVertical: 'top',
-		outlineStyle: 'none'
+		...(Platform.OS === 'web' ? { outlineStyle: 'none' } : {})
 	},
 	submit: {
 		marginTop: 12,

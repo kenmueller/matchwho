@@ -4,7 +4,8 @@ import {
 	TextInput,
 	TouchableOpacity,
 	Text,
-	StyleSheet
+	StyleSheet,
+	Platform
 } from 'react-native'
 
 import theme from '../../lib/theme'
@@ -71,7 +72,7 @@ const styles = StyleSheet.create({
 		borderWidth: 2,
 		borderColor: theme.yellow,
 		borderRadius: 16,
-		outlineStyle: 'none'
+		...(Platform.OS === 'web' ? { outlineStyle: 'none' } : {})
 	},
 	join: {
 		marginTop: 16,

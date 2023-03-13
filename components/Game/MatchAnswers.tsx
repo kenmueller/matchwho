@@ -11,7 +11,8 @@ import {
 	StyleSheet,
 	View,
 	TouchableOpacity,
-	GestureResponderEvent
+	GestureResponderEvent,
+	Platform
 } from 'react-native'
 import { Portal } from '@gorhom/portal'
 
@@ -252,7 +253,7 @@ const GameMatchAnswers = () => {
 							onResponderEnd={onPlayerEnd(player.id)}
 							style={[
 								styles.node,
-								{
+								Platform.OS === 'web' && {
 									// @ts-ignore
 									cursor: dragging ? 'default' : 'pointer'
 								}
@@ -278,7 +279,7 @@ const GameMatchAnswers = () => {
 							onResponderEnd={onAnswerEnd(index)}
 							style={[
 								styles.node,
-								{
+								Platform.OS === 'web' && {
 									// @ts-ignore
 									cursor: dragging ? 'default' : 'pointer'
 								}

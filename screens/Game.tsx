@@ -208,9 +208,7 @@ const styles = StyleSheet.create({
 		fontSize: 20,
 		fontWeight: '700',
 		color: theme.white,
-
-		// @ts-ignore
-		cursor: 'pointer'
+		...(Platform.OS === 'web' ? { cursor: 'pointer' } : {})
 	},
 	titleCode: {
 		alignItems: 'center',
@@ -228,9 +226,7 @@ const styles = StyleSheet.create({
 	},
 	close: {
 		marginRight: 24,
-
-		// @ts-ignore
-		cursor: 'pointer'
+		...(Platform.OS === 'web' ? { cursor: 'pointer' } : {})
 	},
 	closeIcon: {
 		fontSize: 30,
