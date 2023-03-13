@@ -2,9 +2,11 @@ import { StatusBar } from 'expo-status-bar'
 import {
 	/* LinkingOptions, */ NavigationContainer
 } from '@react-navigation/native'
-
-import AppNavigator /*, { AppScreens } */ from './navigators/App'
+import { PortalProvider } from '@gorhom/portal'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
+
+import RootEventsProvider from './components/RootEventsProvider'
+import AppNavigator /*, { AppScreens } */ from './navigators/App'
 
 // const linking: LinkingOptions<AppScreens> = {
 // 	prefixes: ['https://matchwho.io'],
@@ -17,12 +19,16 @@ import { SafeAreaProvider } from 'react-native-safe-area-context'
 // }
 
 const App = () => (
-	<SafeAreaProvider>
-		<NavigationContainer /* linking={linking} */>
-			<StatusBar style="light" />
-			<AppNavigator />
-		</NavigationContainer>
-	</SafeAreaProvider>
+	<RootEventsProvider>
+		<PortalProvider>
+			<SafeAreaProvider>
+				<NavigationContainer /* linking={linking} */>
+					<StatusBar style="light" />
+					<AppNavigator />
+				</NavigationContainer>
+			</SafeAreaProvider>
+		</PortalProvider>
+	</RootEventsProvider>
 )
 
 export default App

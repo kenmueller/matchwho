@@ -11,21 +11,26 @@ import {
 	StyleSheet,
 	View,
 	TouchableOpacity,
-	Alert,
 	PointerEvent,
 	GestureResponderEvent
 } from 'react-native'
+import { Portal } from '@gorhom/portal'
 
 import GameContext from '../../lib/game/context'
 import GameStreamContext from '../../lib/game/context/stream'
+import RootEventsContext from '../../lib/rootEvents/context'
 import theme from '../../lib/theme'
 import alertError from '../../lib/error/alert'
 import Point from '../../lib/point'
+import MatchLink from './Link/Match'
+import MouseLink from './Link/Mouse'
 
 const GameMatchAnswers = () => {
 	const [gameStream] = useContext(GameStreamContext)
 	const [game] = useContext(GameContext)
 	if (!(gameStream && game)) return null
+
+	const { onPointerUp } = useContext(RootEventsContext)
 
 	const elements = useRef<Record<string | number, View>>({})
 	const [point, setPoint] = useState<Point | null>(null)
@@ -76,6 +81,7 @@ const GameMatchAnswers = () => {
 
 	const setPointFromEvent = useCallback(
 		(event: PointerEvent | GestureResponderEvent) => {
+			event.stopPropagation()
 			setPoint({ x: event.nativeEvent.pageX, y: event.nativeEvent.pageY })
 		},
 		[setPoint]
@@ -142,6 +148,17 @@ const GameMatchAnswers = () => {
 			alertError(error)
 		}
 	}, [gameStream, playerLink, answerLink, resetLink])
+
+	useEffect(() => {
+		if (disabled) return
+		return onPointerUp(resetLink)
+	}, [disabled, resetLink])
+
+	const [elementsLoaded, setElementsLoaded] = useState(false)
+
+	useEffect(() => {
+		setElementsLoaded(true)
+	}, [setElementsLoaded])
 
 	return (
 		<View style={styles.root}>
@@ -226,6 +243,27 @@ const GameMatchAnswers = () => {
 					</Text>
 				</TouchableOpacity>
 			)}
+			<Portal>
+				{elementsLoaded &&
+					(correct?.matches ?? matches).map(
+						([player, answer]) =>
+							player in elements.current &&
+							answer in elements.current && (
+								<MatchLink
+									key={player}
+									from={elements.current[player]}
+									to={elements.current[answer]}
+									onPress={
+										disabled
+											? undefined
+											: () => unmatch(player)
+									}
+								/>
+							)
+					)}
+
+				{!disabled && dragging && point && <MouseLink from={point} />}
+			</Portal>
 		</View>
 	)
 }

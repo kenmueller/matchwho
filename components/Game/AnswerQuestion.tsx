@@ -132,6 +132,7 @@ const styles = StyleSheet.create({
 		borderWidth: 2,
 		borderColor: theme.yellow,
 		borderRadius: 16,
+		textAlignVertical: 'top',
 		outlineStyle: 'none'
 	},
 	submit: {
