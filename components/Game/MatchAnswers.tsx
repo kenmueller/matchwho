@@ -25,12 +25,15 @@ import Point from '../../lib/point'
 import Link from './Link'
 import getBounds from '../../lib/bounds/get'
 import boundsContains from '../../lib/bounds/contains'
-import ScrollEnabledContext from '../../lib/scrollEnabled/context'
+import ScrollViewContext from '../../lib/scrollView/context'
 import boundsRelativeTo from '../../lib/bounds/relative'
 import addPoints from '../../lib/point/add'
 
 /** How far away the link is from the node. */
 const SPACING = 8
+
+const shouldSetResponder = () => true
+const responderTerminationRequest = () => false
 
 const GameMatchAnswers = () => {
 	const dimensions = useWindowDimensions()
@@ -39,8 +42,7 @@ const GameMatchAnswers = () => {
 	const [game] = useContext(GameContext)
 	if (!(gameStream && game)) return null
 
-	const [, setScrollEnabled] = useContext(ScrollEnabledContext)
-
+	const scrollView = useContext(ScrollViewContext)
 	const root = useRef<View | null>(null)
 
 	const playerNodes = useRef<Record<string, View>>({})
@@ -98,20 +100,17 @@ const GameMatchAnswers = () => {
 		setAnswerLink(null)
 	}, [setPlayerLink, setAnswerLink])
 
-	const shouldSetResponder = useCallback(() => {
-		setScrollEnabled(false)
-		return true
-	}, [setScrollEnabled])
-
 	const onPlayerStart = useCallback(
 		(player: string) =>
 			({ nativeEvent: { pageX, pageY } }: GestureResponderEvent) => {
+				scrollView.current?.setNativeProps({ scrollEnabled: false })
+
 				setStart({ x: pageX, y: pageY })
 				setEnd(null)
 
 				playerLink === null ? setPlayerLink(player) : resetLink()
 			},
-		[setStart, setEnd, playerLink, setPlayerLink, resetLink]
+		[scrollView, setStart, setEnd, playerLink, setPlayerLink, resetLink]
 	)
 
 	const onPlayerMove = useCallback(
@@ -127,6 +126,8 @@ const GameMatchAnswers = () => {
 			async ({
 				nativeEvent: { pageX, pageY }
 			}: GestureResponderEvent) => {
+				scrollView.current?.setNativeProps({ scrollEnabled: true })
+
 				const point: Point = { x: pageX, y: pageY }
 
 				const map = await Promise.all(
@@ -149,18 +150,20 @@ const GameMatchAnswers = () => {
 
 				resetLink()
 			},
-		[answers, answerNodes, setAnswerLink, resetLink]
+		[scrollView, answers, answerNodes, setAnswerLink, resetLink]
 	)
 
 	const onAnswerStart = useCallback(
 		(answer: number) =>
 			({ nativeEvent: { pageX, pageY } }: GestureResponderEvent) => {
+				scrollView.current?.setNativeProps({ scrollEnabled: false })
+
 				setStart({ x: pageX, y: pageY })
 				setEnd(null)
 
 				answerLink === null ? setAnswerLink(answer) : resetLink()
 			},
-		[setStart, setEnd, answerLink, setAnswerLink, resetLink]
+		[scrollView, setStart, setEnd, answerLink, setAnswerLink, resetLink]
 	)
 
 	const onAnswerMove = useCallback(
@@ -176,6 +179,8 @@ const GameMatchAnswers = () => {
 			async ({
 				nativeEvent: { pageX, pageY }
 			}: GestureResponderEvent) => {
+				scrollView.current?.setNativeProps({ scrollEnabled: true })
+
 				const point: Point = { x: pageX, y: pageY }
 
 				const map = await Promise.all(
@@ -196,7 +201,7 @@ const GameMatchAnswers = () => {
 
 				resetLink()
 			},
-		[players, playerNodes, setPlayerLink, resetLink]
+		[scrollView, players, playerNodes, setPlayerLink, resetLink]
 	)
 
 	const unmatch = useCallback(
@@ -245,60 +250,61 @@ const GameMatchAnswers = () => {
 		}
 	}, [gameStream, playerLink, answerLink, resetLink])
 
-	const getNodeLinkPositions = useCallback(
-		async (root: View) => {
-			const rootBounds = await getBounds(root)
+	const getNodeLinkPositions = useCallback(async () => {
+		if (!root.current) return {}
+		const rootBounds = await getBounds(root.current)
 
-			const positions = await Promise.all([
-				...Object.entries(playerNodes.current).map(
-					async ([player, node]) => {
-						const nodeBounds = await getBounds(node)
-						const relativeBounds = boundsRelativeTo(
-							nodeBounds,
-							rootBounds
-						)
+		const positions = await Promise.all([
+			...Object.entries(playerNodes.current).map(
+				async ([player, node]) => {
+					const nodeBounds = await getBounds(node)
+					const relativeBounds = boundsRelativeTo(
+						nodeBounds,
+						rootBounds
+					)
 
-						return [
-							player,
-							addPoints(relativeBounds, {
-								x: nodeBounds.width + SPACING,
-								y: nodeBounds.height / 2
-							})
-						] as const
-					}
-				),
-				...Object.entries(answerNodes.current).map(
-					async ([index, node]) => {
-						const nodeBounds = await getBounds(node)
-						const relativeBounds = boundsRelativeTo(
-							nodeBounds,
-							rootBounds
-						)
+					return [
+						player,
+						addPoints(relativeBounds, {
+							x: nodeBounds.width + SPACING,
+							y: nodeBounds.height / 2
+						})
+					] as const
+				}
+			),
+			...Object.entries(answerNodes.current).map(
+				async ([index, node]) => {
+					const nodeBounds = await getBounds(node)
+					const relativeBounds = boundsRelativeTo(
+						nodeBounds,
+						rootBounds
+					)
 
-						return [
-							index,
-							addPoints(relativeBounds, {
-								x: -SPACING,
-								y: nodeBounds.height / 2
-							})
-						] as const
-					}
-				)
-			])
+					return [
+						index,
+						addPoints(relativeBounds, {
+							x: -SPACING,
+							y: nodeBounds.height / 2
+						})
+					] as const
+				}
+			)
+		])
 
-			return Object.fromEntries(positions)
-		},
-		[playerNodes, answerNodes]
-	)
+		return Object.fromEntries(positions)
+	}, [root, playerNodes, answerNodes])
 
 	useEffect(() => {
-		if (!root.current) return
-		getNodeLinkPositions(root.current).then(setNodeLinkPositions)
-	}, [root, setNodeLinkPositions, dimensions])
+		getNodeLinkPositions().then(setNodeLinkPositions)
+	}, [getNodeLinkPositions, setNodeLinkPositions, matches, dimensions])
 
 	useEffect(() => {
-		setScrollEnabled(!dragging)
-	}, [dragging, setScrollEnabled])
+		// Fix offset match bug
+
+		setTimeout(() => {
+			getNodeLinkPositions().then(setNodeLinkPositions)
+		}, 500)
+	}, [getNodeLinkPositions, setNodeLinkPositions])
 
 	return (
 		<View ref={current => (root.current = current)} style={styles.root}>
@@ -323,6 +329,9 @@ const GameMatchAnswers = () => {
 							onResponderStart={onPlayerStart(player.id)}
 							onResponderMove={onPlayerMove(player.id)}
 							onResponderEnd={onPlayerEnd(player.id)}
+							onResponderTerminationRequest={
+								responderTerminationRequest
+							}
 							style={[
 								styles.node,
 								Platform.OS === 'web' && {
@@ -352,6 +361,9 @@ const GameMatchAnswers = () => {
 							onResponderStart={onAnswerStart(index)}
 							onResponderMove={onAnswerMove(index)}
 							onResponderEnd={onAnswerEnd(index)}
+							onResponderTerminationRequest={
+								responderTerminationRequest
+							}
 							style={[
 								styles.node,
 								Platform.OS === 'web' && {

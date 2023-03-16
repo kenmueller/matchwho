@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react'
+import { useContext, useRef } from 'react'
 import { Text, View, StyleSheet, Platform, ScrollView } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
@@ -11,7 +11,7 @@ import JoiningView from './JoiningView'
 import StartedView from './StartedView'
 import CompletedView from './CompletedView'
 import GameTurnState from '../../lib/game/turn/state'
-import ScrollEnabledContext from '../../lib/scrollEnabled/context'
+import ScrollViewContext from '../../lib/scrollView/context'
 
 const shouldSetResponder = () => true
 const paddingVertical = 24
@@ -22,12 +22,12 @@ const GameView = () => {
 	const [game] = useContext(GameContext)
 	if (!game) return null
 
+	const scrollView = useRef<ScrollView | null>(null)
+
 	/** If matching answers. */
 	const hasScrollView =
 		game.state === GameState.Started &&
 		game.turn?.state === GameTurnState.Matching
-
-	const [scrollEnabled, setScrollEnabled] = useState(true)
 
 	const internal = (
 		<>
@@ -52,8 +52,8 @@ const GameView = () => {
 			{!game.self && <Text style={styles.spectating}>spectating</Text>}
 			{hasScrollView ? (
 				<ScrollView
+					ref={current => (scrollView.current = current)}
 					bounces={false}
-					scrollEnabled={Platform.OS === 'web' || scrollEnabled}
 					contentContainerStyle={[
 						styles.scrollContainer,
 						{
@@ -67,16 +67,12 @@ const GameView = () => {
 					style={styles.scroll}
 				>
 					<View
-						onStartShouldSetResponder={
-							scrollEnabled ? shouldSetResponder : undefined
-						}
+						onStartShouldSetResponder={shouldSetResponder}
 						style={styles.container}
 					>
-						<ScrollEnabledContext.Provider
-							value={[scrollEnabled, setScrollEnabled]}
-						>
+						<ScrollViewContext.Provider value={scrollView}>
 							{internal}
-						</ScrollEnabledContext.Provider>
+						</ScrollViewContext.Provider>
 					</View>
 				</ScrollView>
 			) : (
