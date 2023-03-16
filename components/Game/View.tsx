@@ -1,5 +1,12 @@
 import { useContext, useRef } from 'react'
-import { Text, View, StyleSheet, Platform, ScrollView } from 'react-native'
+import {
+	Text,
+	View,
+	StyleSheet,
+	Platform,
+	ScrollView,
+	useWindowDimensions
+} from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 import theme from '../../lib/theme'
@@ -17,6 +24,7 @@ const shouldSetResponder = () => true
 const paddingVertical = 24
 
 const GameView = () => {
+	const dimensions = useWindowDimensions()
 	const insets = useSafeAreaInsets()
 
 	const [game] = useContext(GameContext)
@@ -28,6 +36,8 @@ const GameView = () => {
 	const hasScrollView =
 		game.state === GameState.Started &&
 		game.turn?.state === GameTurnState.Matching
+
+	const paddingHorizontal = dimensions.width < 350 ? 16 : 32
 
 	const internal = (
 		<>
@@ -68,7 +78,7 @@ const GameView = () => {
 				>
 					<View
 						onStartShouldSetResponder={shouldSetResponder}
-						style={styles.container}
+						style={[styles.container, { paddingHorizontal }]}
 					>
 						<ScrollViewContext.Provider value={scrollView}>
 							{internal}
@@ -76,7 +86,12 @@ const GameView = () => {
 					</View>
 				</ScrollView>
 			) : (
-				<View style={[styles.container, { paddingVertical }]}>
+				<View
+					style={[
+						styles.container,
+						{ paddingVertical, paddingHorizontal }
+					]}
+				>
 					{internal}
 				</View>
 			)}
@@ -95,8 +110,7 @@ const styles = StyleSheet.create({
 	},
 	container: {
 		width: '100%',
-		height: '100%',
-		paddingHorizontal: 32
+		height: '100%'
 	},
 	spectating: {
 		position: 'absolute',

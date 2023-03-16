@@ -50,7 +50,8 @@ const styles = StyleSheet.create({
 	root: {
 		alignSelf: 'center',
 		marginTop: 'auto',
-		marginBottom: 'auto'
+		marginBottom: 'auto',
+		width: '100%'
 	}
 })
 

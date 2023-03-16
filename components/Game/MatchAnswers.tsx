@@ -306,8 +306,40 @@ const GameMatchAnswers = () => {
 		}, 500)
 	}, [getNodeLinkPositions, setNodeLinkPositions])
 
+	const [columnLayout, _setColumnLayout] = useState<{
+		width: number
+		gap: number
+	} | null>(null)
+
+	const setColumnLayout = useCallback(async () => {
+		if (!root.current) return
+		const bounds = await getBounds(root.current)
+
+		const gap =
+			bounds.width < 350
+				? 50
+				: bounds.width < 500
+				? 100
+				: bounds.width < 800
+				? 150
+				: 200
+		const width = (bounds.width - gap) / 2
+
+		console.log(bounds.width, width, gap)
+
+		_setColumnLayout({ width, gap })
+	}, [root, _setColumnLayout])
+
+	useEffect(() => {
+		setColumnLayout()
+	}, [setColumnLayout, dimensions])
+
 	return (
-		<View ref={current => (root.current = current)} style={styles.root}>
+		<View
+			ref={current => (root.current = current)}
+			onLayout={setColumnLayout}
+			style={styles.root}
+		>
 			<Text style={styles.question}>
 				{game.turn?.question ?? '(error)'}
 			</Text>
@@ -315,67 +347,100 @@ const GameMatchAnswers = () => {
 				pointerEvents={disabled ? 'none' : 'auto'}
 				style={styles.columns}
 			>
-				<View style={styles.players}>
-					<Text style={styles.title}>Players</Text>
-					{players.map(player => (
+				{columnLayout && (
+					<>
 						<View
-							key={player.id}
-							ref={current => {
-								current
-									? (playerNodes.current[player.id] = current)
-									: delete playerNodes.current[player.id]
-							}}
-							onStartShouldSetResponder={shouldSetResponder}
-							onResponderStart={onPlayerStart(player.id)}
-							onResponderMove={onPlayerMove(player.id)}
-							onResponderEnd={onPlayerEnd(player.id)}
-							onResponderTerminationRequest={
-								responderTerminationRequest
-							}
 							style={[
-								styles.node,
-								Platform.OS === 'web' && {
-									// @ts-ignore
-									cursor: dragging ? 'default' : 'pointer'
+								styles.players,
+								{ width: columnLayout.width }
+							]}
+						>
+							<Text style={styles.title}>Players</Text>
+							{players.map(player => (
+								<View
+									key={player.id}
+									ref={current => {
+										current
+											? (playerNodes.current[player.id] =
+													current)
+											: delete playerNodes.current[
+													player.id
+											  ]
+									}}
+									onStartShouldSetResponder={
+										shouldSetResponder
+									}
+									onResponderStart={onPlayerStart(player.id)}
+									onResponderMove={onPlayerMove(player.id)}
+									onResponderEnd={onPlayerEnd(player.id)}
+									onResponderTerminationRequest={
+										responderTerminationRequest
+									}
+									style={[
+										styles.node,
+										Platform.OS === 'web' && {
+											// @ts-ignore
+											cursor: dragging
+												? 'default'
+												: 'pointer'
+										}
+									]}
+								>
+									<Text style={styles.nodeText}>
+										{player.name}
+									</Text>
+								</View>
+							))}
+						</View>
+						<View
+							style={[
+								styles.answers,
+								{
+									width: columnLayout.width,
+									marginLeft: columnLayout.gap
 								}
 							]}
 						>
-							<Text style={styles.nodeText}>{player.name}</Text>
+							<Text style={styles.title}>Answers</Text>
+							{answers.map((answer, index) => (
+								<View
+									key={index}
+									ref={current => {
+										current
+											? (answerNodes.current[
+													index.toString()
+											  ] = current)
+											: delete answerNodes.current[
+													index.toString()
+											  ]
+									}}
+									onStartShouldSetResponder={
+										shouldSetResponder
+									}
+									onResponderStart={onAnswerStart(index)}
+									onResponderMove={onAnswerMove(index)}
+									onResponderEnd={onAnswerEnd(index)}
+									onResponderTerminationRequest={
+										responderTerminationRequest
+									}
+									style={[
+										styles.node,
+										Platform.OS === 'web' && {
+											// @ts-ignore
+											cursor: dragging
+												? 'default'
+												: 'pointer'
+										}
+									]}
+								>
+									<Text style={styles.nodeText}>
+										{answer}
+									</Text>
+								</View>
+							))}
 						</View>
-					))}
-				</View>
-				<View style={styles.answers}>
-					<Text style={styles.title}>Answers</Text>
-					{answers.map((answer, index) => (
-						<View
-							key={index}
-							ref={current => {
-								current
-									? (answerNodes.current[index.toString()] =
-											current)
-									: delete answerNodes.current[
-											index.toString()
-									  ]
-							}}
-							onStartShouldSetResponder={shouldSetResponder}
-							onResponderStart={onAnswerStart(index)}
-							onResponderMove={onAnswerMove(index)}
-							onResponderEnd={onAnswerEnd(index)}
-							onResponderTerminationRequest={
-								responderTerminationRequest
-							}
-							style={[
-								styles.node,
-								Platform.OS === 'web' && {
-									// @ts-ignore
-									cursor: dragging ? 'default' : 'pointer'
-								}
-							]}
-						>
-							<Text style={styles.nodeText}>{answer}</Text>
-						</View>
-					))}
-				</View>
+					</>
+				)}
 			</View>
 			{correct ? (
 				<Text style={styles.correct}>
@@ -425,7 +490,9 @@ const GameMatchAnswers = () => {
 const styles = StyleSheet.create({
 	root: {
 		position: 'relative',
-		alignItems: 'center'
+		alignItems: 'center',
+		width: '100%',
+		backgroundColor: 'green'
 	},
 	question: {
 		alignSelf: 'flex-start',
@@ -437,14 +504,16 @@ const styles = StyleSheet.create({
 	columns: {
 		flexDirection: 'row',
 		alignItems: 'stretch',
-		marginTop: 16
+		marginTop: 16,
+		width: '100%'
 	},
 	players: {
-		alignItems: 'flex-end'
+		alignItems: 'flex-end',
+		backgroundColor: 'red'
 	},
 	answers: {
 		alignItems: 'flex-start',
-		marginLeft: 100
+		backgroundColor: 'blue'
 	},
 	title: {
 		fontSize: 22,
@@ -461,7 +530,8 @@ const styles = StyleSheet.create({
 	nodeText: {
 		fontSize: 16,
 		fontWeight: '700',
-		color: theme.white
+		color: theme.white,
+		...(Platform.OS === 'web' ? { wordBreak: 'break-word' } : {})
 	},
 	correct: {
 		// Must add to submit.marginTop to prevent layout from shifting

@@ -24,6 +24,7 @@ const GamePlayersDrawerRow = ({ player }: { player: Player }) => {
 		<View style={styles.root}>
 			<View style={styles.name}>
 				<Text
+					numberOfLines={1}
 					style={[
 						styles.nameValue,
 						turn && styles.turn,
@@ -76,6 +77,7 @@ const styles = StyleSheet.create({
 		alignItems: 'center'
 	},
 	nameValue: {
+		maxWidth: 100,
 		fontWeight: '700',
 		color: theme.white
 	},
