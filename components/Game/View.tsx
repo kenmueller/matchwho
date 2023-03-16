@@ -32,10 +32,11 @@ const GameView = () => {
 
 	const scrollView = useRef<ScrollView | null>(null)
 
-	/** If matching answers. */
+	/** If matching answers or completed game. */
 	const hasScrollView =
-		game.state === GameState.Started &&
-		game.turn?.state === GameTurnState.Matching
+		(game.state === GameState.Started &&
+			game.turn?.state === GameTurnState.Matching) ||
+		game.state === GameState.Completed
 
 	const paddingHorizontal = dimensions.width < 350 ? 16 : 32
 
