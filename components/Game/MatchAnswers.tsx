@@ -491,8 +491,7 @@ const styles = StyleSheet.create({
 	root: {
 		position: 'relative',
 		alignItems: 'center',
-		width: '100%',
-		backgroundColor: 'green'
+		width: '100%'
 	},
 	question: {
 		alignSelf: 'flex-start',
@@ -508,12 +507,10 @@ const styles = StyleSheet.create({
 		width: '100%'
 	},
 	players: {
-		alignItems: 'flex-end',
-		backgroundColor: 'red'
+		alignItems: 'flex-end'
 	},
 	answers: {
-		alignItems: 'flex-start',
-		backgroundColor: 'blue'
+		alignItems: 'flex-start'
 	},
 	title: {
 		fontSize: 22,
