@@ -7,9 +7,12 @@ import {
 	StyleSheet,
 	Platform
 } from 'react-native'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 import theme from '../../lib/theme'
 import MAX_NAME_LENGTH from '../../lib/game/name'
+import alertError from '../../lib/error/alert'
+import { STORAGE_NAME_KEY } from '../../lib/storage/keys'
 
 const JoinGame = ({
 	joining,
@@ -20,7 +23,7 @@ const JoinGame = ({
 }) => {
 	const input = useRef<TextInput | null>(null)
 
-	const [name, setName] = useState('')
+	const [name, _setName] = useState('')
 
 	const normalizedName = name.trim()
 	const disabled = !normalizedName
@@ -32,6 +35,22 @@ const JoinGame = ({
 	useEffect(() => {
 		input.current?.focus()
 	}, [input])
+
+	const setName = useCallback(
+		(newName: string) => {
+			AsyncStorage.setItem(STORAGE_NAME_KEY, newName).catch(alertError)
+			_setName(newName)
+		},
+		[_setName]
+	)
+
+	useEffect(() => {
+		AsyncStorage.getItem(STORAGE_NAME_KEY)
+			.then(savedName => {
+				_setName(savedName ?? '')
+			})
+			.catch(alertError)
+	}, [_setName])
 
 	return (
 		<View style={styles.root}>

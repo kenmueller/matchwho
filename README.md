@@ -11,5 +11,4 @@
 
 -   Create game completed view
 -   Automatically go to the next game when you visit a previous game that has a next game
--   Save and autofill player name
 -   Save games in local storage and display them in a list
