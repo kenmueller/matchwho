@@ -1,6 +1,7 @@
 import { View, StyleSheet, Text } from 'react-native'
 
 import SavedGame from '../../../lib/game/saved'
+import Podium from './Podium'
 import theme from '../../../lib/theme'
 
 const GameResults = ({
@@ -9,6 +10,7 @@ const GameResults = ({
 }: Pick<SavedGame, 'players' | 'questions'>) => {
 	return (
 		<View style={styles.root}>
+			<Podium players={players} />
 			<Text style={styles.questionsTitle}>Questions</Text>
 			{questions.map(({ name, question, answers }, index) => (
 				<View key={index} style={styles.question}>
