@@ -21,6 +21,8 @@ import MatchIcon from '../icons/Match'
 import theme from '../lib/theme'
 import HomeMainContent from '../components/Home/Main'
 import Apps from '../components/Home/Apps'
+import getMobileOS from '../lib/mobile/os'
+import { ANDROID_URL, IOS_URL } from '../lib/apps'
 
 const shouldSetResponder = () => true
 const paddingVertical = 80
@@ -70,6 +72,19 @@ const HomeScreen = () => {
 	const viewPastGames = useCallback(() => {
 		navigation.push('PastGames')
 	}, [navigation])
+
+	useEffect(() => {
+		if (Platform.OS !== 'web') return
+
+		switch (getMobileOS()) {
+			case 'ios':
+				window.location.href = IOS_URL
+				break
+			case 'android':
+				window.location.href = ANDROID_URL
+				break
+		}
+	}, [])
 
 	return (
 		<KeyboardAvoidingView
