@@ -31,8 +31,6 @@ const GameView = () => {
 
 	const scrollView = useRef<ScrollView | null>(null)
 
-	const paddingHorizontal = dimensions.width < 350 ? 16 : 32
-
 	return (
 		<>
 			{!game.self && <Text style={styles.spectating}>spectating</Text>}
@@ -50,7 +48,10 @@ const GameView = () => {
 			>
 				<View
 					onStartShouldSetResponder={shouldSetResponder}
-					style={[styles.container, { paddingHorizontal }]}
+					style={[
+						styles.container,
+						{ paddingHorizontal: dimensions.width < 350 ? 16 : 32 }
+					]}
 				>
 					<ScrollViewContext.Provider value={scrollView}>
 						{game.state === GameState.Started && (

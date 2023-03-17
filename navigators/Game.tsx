@@ -11,6 +11,7 @@ import GameContext from '../lib/game/context'
 import PlayersDrawer from '../components/Game/Drawer/PlayersDrawer'
 import { GameStream } from '../lib/api/gameStream'
 import GameStreamContext from '../lib/game/context/stream'
+import HEADER_OPTIONS from '../lib/header/options'
 
 export type GameScreens = {
 	GameInternal: { code: string }
@@ -31,6 +32,7 @@ const GameNavigator = () => {
 					initialRouteName="GameInternal"
 					drawerContent={PlayersDrawer}
 					screenOptions={{
+						...HEADER_OPTIONS,
 						drawerType:
 							// Only make the drawer permanent if you've joined the game on the web
 							Platform.OS === 'web' && game
@@ -43,9 +45,6 @@ const GameNavigator = () => {
 						component={GameScreen}
 						initialParams={route.params}
 						options={{
-							headerTitleAlign: 'center',
-							headerTintColor: theme.white,
-							headerStyle: { backgroundColor: theme.darkGray },
 							headerTitle: '',
 							headerLeft: () => null,
 							headerRight: () => null
