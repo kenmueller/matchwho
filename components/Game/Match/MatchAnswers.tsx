@@ -17,17 +17,17 @@ import {
 } from 'react-native'
 import { Portal } from '@gorhom/portal'
 
-import GameContext from '../../lib/game/context'
-import GameStreamContext from '../../lib/game/context/stream'
-import theme from '../../lib/theme'
-import alertError from '../../lib/error/alert'
-import Point from '../../lib/point'
+import GameContext from '../../../lib/game/context'
+import GameStreamContext from '../../../lib/game/context/stream'
+import theme from '../../../lib/theme'
+import alertError from '../../../lib/error/alert'
+import Point from '../../../lib/point'
 import Link from './Link'
-import getBounds from '../../lib/bounds/get'
-import boundsContains from '../../lib/bounds/contains'
-import ScrollViewContext from '../../lib/scrollView/context'
-import boundsRelativeTo from '../../lib/bounds/relative'
-import addPoints from '../../lib/point/add'
+import getBounds from '../../../lib/bounds/get'
+import boundsContains from '../../../lib/bounds/contains'
+import ScrollViewContext from '../../../lib/scrollView/context'
+import boundsRelativeTo from '../../../lib/bounds/relative'
+import addPoints from '../../../lib/point/add'
 
 /** How far away the link is from the node. */
 const SPACING = 8

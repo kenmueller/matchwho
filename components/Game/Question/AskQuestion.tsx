@@ -8,10 +8,10 @@ import {
 	Platform
 } from 'react-native'
 
-import theme from '../../lib/theme'
-import alertError from '../../lib/error/alert'
-import GameStreamContext from '../../lib/game/context/stream'
-import MAX_QUESTION_LENGTH from '../../lib/game/question'
+import theme from '../../../lib/theme'
+import alertError from '../../../lib/error/alert'
+import GameStreamContext from '../../../lib/game/context/stream'
+import MAX_QUESTION_LENGTH from '../../../lib/game/question'
 
 const GameAskQuestion = () => {
 	const [gameStream] = useContext(GameStreamContext)

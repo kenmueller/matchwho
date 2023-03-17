@@ -62,6 +62,10 @@ const HomeScreen = () => {
 		}
 	}, [navigation, setIsLoading])
 
+	const viewPastGames = useCallback(() => {
+		navigation.push('PastGames')
+	}, [navigation])
+
 	return (
 		<KeyboardAvoidingView
 			behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -111,6 +115,9 @@ const HomeScreen = () => {
 							<Text style={styles.createText}>Create Game</Text>
 						</TouchableOpacity>
 					</View>
+					{/* <TouchableOpacity onPress={viewPastGames} style={styles.pastGames}>
+						<Text style={styles.pastGamesText}>View Past Games</Text>
+					</TouchableOpacity> */}
 				</View>
 			</TouchableWithoutFeedback>
 		</KeyboardAvoidingView>

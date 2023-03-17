@@ -4,12 +4,11 @@ import { RouteProp, useRoute } from '@react-navigation/native'
 import { createDrawerNavigator } from '@react-navigation/drawer'
 
 import GameScreen from '../screens/Game'
-import GameMeta from '../lib/game/meta'
 import { AppScreens } from './App'
 import theme from '../lib/theme'
 import Game from '../lib/game'
 import GameContext from '../lib/game/context'
-import PlayersDrawer from '../components/Game/PlayersDrawer'
+import PlayersDrawer from '../components/Game/Drawer/PlayersDrawer'
 import { GameStream } from '../lib/api/gameStream'
 import GameStreamContext from '../lib/game/context/stream'
 

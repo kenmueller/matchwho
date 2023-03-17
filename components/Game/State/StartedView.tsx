@@ -1,12 +1,12 @@
 import { useContext } from 'react'
 import { StyleSheet, View } from 'react-native'
 
-import GameContext from '../../lib/game/context'
-import GameTurnState from '../../lib/game/turn/state'
-import Message from './Message'
-import AskQuestion from './AskQuestion'
-import AnswerQuestion from './AnswerQuestion'
-import MatchAnswers from './MatchAnswers'
+import GameContext from '../../../lib/game/context'
+import GameTurnState from '../../../lib/game/turn/state'
+import Message from '../Message'
+import AskQuestion from '../Question/AskQuestion'
+import AnswerQuestion from '../Question/AnswerQuestion'
+import MatchAnswers from '../Match/MatchAnswers'
 
 const GameStartedView = () => {
 	const [game] = useContext(GameContext)

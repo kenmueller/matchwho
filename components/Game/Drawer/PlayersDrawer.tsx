@@ -2,8 +2,8 @@ import { useContext } from 'react'
 import { View, StyleSheet, Platform, Text, ScrollView } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
-import GameContext from '../../lib/game/context'
-import theme from '../../lib/theme'
+import GameContext from '../../../lib/game/context'
+import theme from '../../../lib/theme'
 import PlayersDrawerRow from './PlayersDrawerRow'
 
 const paddingVertical = 18

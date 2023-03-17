@@ -1,12 +1,12 @@
 import { useContext } from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 
-import LeaderIcon from '../../icons/Leader'
-import PointIcon from '../../icons/Point'
-import GameContext from '../../lib/game/context'
-import Player from '../../lib/game/player'
-import GameState from '../../lib/game/state'
-import theme from '../../lib/theme'
+import LeaderIcon from '../../../icons/Leader'
+import PointIcon from '../../../icons/Point'
+import GameContext from '../../../lib/game/context'
+import Player from '../../../lib/game/player'
+import GameState from '../../../lib/game/state'
+import theme from '../../../lib/theme'
 
 const GamePlayersDrawerRow = ({ player }: { player: Player }) => {
 	const [game] = useContext(GameContext)

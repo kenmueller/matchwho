@@ -2,21 +2,36 @@ import { createStackNavigator } from '@react-navigation/stack'
 
 import HomeScreen from '../screens/Home'
 import GameNavigator from './Game'
+import PastGames from '../screens/PastGames'
 
 export type AppScreens = {
 	Home: undefined
 	Game: { code: string }
+	PastGames: undefined
 }
 
 const Stack = createStackNavigator<AppScreens>()
 
 const AppNavigator = () => (
-	<Stack.Navigator
-		initialRouteName="Home"
-		screenOptions={{ title: 'Match Who', headerShown: false }}
-	>
-		<Stack.Screen name="Home" component={HomeScreen} />
-		<Stack.Screen name="Game" component={GameNavigator} />
+	<Stack.Navigator initialRouteName="Home">
+		<Stack.Screen
+			name="Home"
+			component={HomeScreen}
+			options={{ title: 'Match Who', headerShown: false }}
+		/>
+		<Stack.Screen
+			name="Game"
+			component={GameNavigator}
+			options={{ title: 'Match Who', headerShown: false }}
+		/>
+		<Stack.Screen
+			name="PastGames"
+			component={PastGames}
+			options={{
+				title: 'Past Games | Match Who',
+				headerTitle: 'Past Games'
+			}}
+		/>
 	</Stack.Navigator>
 )
 

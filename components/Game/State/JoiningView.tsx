@@ -1,13 +1,13 @@
 import { useState, useContext, useCallback } from 'react'
 import { Text, TouchableOpacity, View, StyleSheet } from 'react-native'
 
-import GameContext from '../../lib/game/context'
-import GameStreamContext from '../../lib/game/context/stream'
-import { MIN_PLAYERS } from '../../lib/game/player/bounds'
-import GameState from '../../lib/game/state'
-import Message from './Message'
-import theme from '../../lib/theme'
-import alertError from '../../lib/error/alert'
+import GameContext from '../../../lib/game/context'
+import GameStreamContext from '../../../lib/game/context/stream'
+import { MIN_PLAYERS } from '../../../lib/game/player/bounds'
+import GameState from '../../../lib/game/state'
+import Message from '../Message'
+import theme from '../../../lib/theme'
+import alertError from '../../../lib/error/alert'
 
 const GameJoiningView = () => {
 	const [gameStream] = useContext(GameStreamContext)

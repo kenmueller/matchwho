@@ -1,7 +1,7 @@
 import { useContext } from 'react'
 
-import GameContext from '../../lib/game/context'
-import GameResults from './Completed/Results'
+import GameContext from '../../../lib/game/context'
+import GameResults from '../Completed/Results'
 
 const GameCompletedView = () => {
 	const [game] = useContext(GameContext)
