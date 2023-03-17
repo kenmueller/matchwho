@@ -9,7 +9,6 @@
 
 ### Next release
 
--   Force player to download mobile app on web when visited from a mobile device
 -   Create game completed view
 -   Automatically go to the next game when you visit a previous game that has a next game
 -   Save and autofill player name
