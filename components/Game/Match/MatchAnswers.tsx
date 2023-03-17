@@ -325,8 +325,6 @@ const GameMatchAnswers = () => {
 				: 200
 		const width = (bounds.width - gap) / 2
 
-		console.log(bounds.width, width, gap)
-
 		_setColumnLayout({ width, gap })
 	}, [root, _setColumnLayout])
 
