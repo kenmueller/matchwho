@@ -1,6 +1,7 @@
 {
 	"expo": {
 		"name": "Match Who",
+		"description": "The ultimate party game. Get to know each other by figuring out who answered what.",
 		"slug": "matchwho",
 		"scheme": "matchwho",
 		"version": "1.0.0",
