@@ -7,13 +7,14 @@ import {
 import { Ionicons } from '@expo/vector-icons'
 
 import theme from '../../lib/theme'
+import { ANDROID_URL, IOS_URL } from '../../lib/apps'
 
-const apple = () => {
-	alert('iOS app coming soon')
+const ios = () => {
+	window.open(IOS_URL)
 }
 
 const android = () => {
-	alert('Android app coming soon')
+	window.open(ANDROID_URL)
 }
 
 const HomeApps = () => {
@@ -23,7 +24,7 @@ const HomeApps = () => {
 
 	return (
 		<View style={[styles.root, { top: margin, right: margin }]}>
-			<TouchableOpacity onPress={apple}>
+			<TouchableOpacity onPress={ios}>
 				<Ionicons name="logo-apple" style={styles.icon} />
 			</TouchableOpacity>
 			<TouchableOpacity onPress={android}>
