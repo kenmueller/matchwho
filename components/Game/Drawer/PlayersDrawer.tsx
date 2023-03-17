@@ -17,6 +17,7 @@ const GamePlayersDrawer = () => {
 	return (
 		<ScrollView
 			bounces={false}
+			keyboardShouldPersistTaps="handled"
 			contentContainerStyle={[
 				styles.scrollContainer,
 				{

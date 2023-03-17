@@ -37,6 +37,7 @@ const GameView = () => {
 			<ScrollView
 				ref={current => (scrollView.current = current)}
 				bounces={false}
+				keyboardShouldPersistTaps="handled"
 				contentContainerStyle={[
 					styles.scrollContainer,
 					{

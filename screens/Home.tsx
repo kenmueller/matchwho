@@ -99,6 +99,7 @@ const HomeScreen = () => {
 				<View style={styles.rootContainer}>
 					<ScrollView
 						bounces={false}
+						keyboardShouldPersistTaps="handled"
 						contentContainerStyle={styles.scrollContainer}
 						style={styles.scroll}
 					>

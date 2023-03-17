@@ -70,16 +70,18 @@ const HomeMainContent = () => {
 				onChangeText={setCode}
 				style={styles.joinInput}
 			/>
-			<TouchableOpacity
-				disabled={isLoading || isJoinDisabled}
-				onPress={join}
-				style={[
-					styles.join,
-					(isLoading || isJoinDisabled) && styles.disabled
-				]}
-			>
-				<Text style={styles.joinText}>Join Game</Text>
-			</TouchableOpacity>
+			<View onStartShouldSetResponder={() => true}>
+				<TouchableOpacity
+					disabled={isLoading || isJoinDisabled}
+					onPress={join}
+					style={[
+						styles.join,
+						(isLoading || isJoinDisabled) && styles.disabled
+					]}
+				>
+					<Text style={styles.joinText}>Join Game</Text>
+				</TouchableOpacity>
+			</View>
 			<View style={styles.divider} />
 			<TouchableOpacity
 				disabled={isLoading}
