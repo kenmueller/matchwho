@@ -17,7 +17,6 @@ import ROUNDS from '../../lib/game/rounds'
 import JoiningView from './State/JoiningView'
 import StartedView from './State/StartedView'
 import CompletedView from './State/CompletedView'
-import GameTurnState from '../../lib/game/turn/state'
 import ScrollViewContext from '../../lib/scrollView/context'
 
 const shouldSetResponder = () => true
@@ -32,70 +31,42 @@ const GameView = () => {
 
 	const scrollView = useRef<ScrollView | null>(null)
 
-	/** If matching answers or completed game. */
-	const hasScrollView =
-		(game.state === GameState.Started &&
-			game.turn?.state === GameTurnState.Matching) ||
-		game.state === GameState.Completed
-
 	const paddingHorizontal = dimensions.width < 350 ? 16 : 32
-
-	const internal = (
-		<>
-			{game.state === GameState.Started && (
-				<Text style={styles.rounds}>
-					Round {game.round}/{ROUNDS}
-				</Text>
-			)}
-			<Text
-				style={[styles.status, hasScrollView && { marginBottom: 20 }]}
-			>
-				{gameStatus(game)}
-			</Text>
-			{game.state === GameState.Joining && <JoiningView />}
-			{game.state === GameState.Started && <StartedView />}
-			{game.state === GameState.Completed && <CompletedView />}
-		</>
-	)
 
 	return (
 		<>
 			{!game.self && <Text style={styles.spectating}>spectating</Text>}
-			{hasScrollView ? (
-				<ScrollView
-					ref={current => (scrollView.current = current)}
-					bounces={false}
-					contentContainerStyle={[
-						styles.scrollContainer,
-						{
-							paddingTop: paddingVertical,
-							paddingBottom: Math.max(
-								paddingVertical,
-								insets.bottom
-							)
-						}
-					]}
-					style={styles.scroll}
-				>
-					<View
-						onStartShouldSetResponder={shouldSetResponder}
-						style={[styles.container, { paddingHorizontal }]}
-					>
-						<ScrollViewContext.Provider value={scrollView}>
-							{internal}
-						</ScrollViewContext.Provider>
-					</View>
-				</ScrollView>
-			) : (
+			<ScrollView
+				ref={current => (scrollView.current = current)}
+				bounces={false}
+				contentContainerStyle={[
+					styles.scrollContainer,
+					{
+						paddingTop: paddingVertical,
+						paddingBottom: Math.max(paddingVertical, insets.bottom)
+					}
+				]}
+				style={styles.scroll}
+			>
 				<View
-					style={[
-						styles.container,
-						{ paddingVertical, paddingHorizontal }
-					]}
+					onStartShouldSetResponder={shouldSetResponder}
+					style={[styles.container, { paddingHorizontal }]}
 				>
-					{internal}
+					<ScrollViewContext.Provider value={scrollView}>
+						{game.state === GameState.Started && (
+							<Text style={styles.rounds}>
+								Round {game.round}/{ROUNDS}
+							</Text>
+						)}
+						<Text style={styles.status}>{gameStatus(game)}</Text>
+						{game.state === GameState.Joining && <JoiningView />}
+						{game.state === GameState.Started && <StartedView />}
+						{game.state === GameState.Completed && (
+							<CompletedView />
+						)}
+					</ScrollViewContext.Provider>
 				</View>
-			)}
+			</ScrollView>
 		</>
 	)
 }
@@ -129,6 +100,7 @@ const styles = StyleSheet.create({
 		color: theme.white
 	},
 	status: {
+		marginBottom: 20,
 		fontSize: Platform.OS === 'web' ? 30 : 24,
 		fontWeight: '900',
 		color: theme.white
