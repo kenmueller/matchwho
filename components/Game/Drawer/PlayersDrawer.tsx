@@ -27,7 +27,7 @@ const GamePlayersDrawer = () => {
 				// Fixes scrollview height to parent height
 				Platform.OS === 'web' && { height: 0 }
 			]}
-			style={[styles.scroll]}
+			style={styles.scroll}
 		>
 			<View style={styles.inner}>
 				<Text style={styles.title}>Players</Text>
