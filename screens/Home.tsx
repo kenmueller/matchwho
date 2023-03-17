@@ -27,6 +27,8 @@ import { ANDROID_URL, IOS_URL } from '../lib/apps'
 const shouldSetResponder = () => true
 const paddingVertical = 80
 
+const mobileOS = getMobileOS()
+
 const HomeScreen = () => {
 	const dimensions = useWindowDimensions()
 	const insets = useSafeAreaInsets()
@@ -76,7 +78,7 @@ const HomeScreen = () => {
 	useEffect(() => {
 		if (Platform.OS !== 'web') return
 
-		switch (getMobileOS()) {
+		switch (mobileOS) {
 			case 'ios':
 				window.location.href = IOS_URL
 				break
@@ -132,7 +134,7 @@ const HomeScreen = () => {
 							)}
 						</Animated.View>
 					</ScrollView>
-					{Platform.OS === 'web' && <Apps />}
+					{Platform.OS === 'web' && !mobileOS && <Apps />}
 				</View>
 			</TouchableWithoutFeedback>
 		</KeyboardAvoidingView>
