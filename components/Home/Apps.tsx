@@ -1,14 +1,48 @@
-import { Ionicons, MaterialIcons } from '@expo/vector-icons'
-import { StyleSheet, TouchableOpacity, View } from 'react-native'
+import {
+	StyleSheet,
+	TouchableOpacity,
+	useWindowDimensions,
+	View
+} from 'react-native'
+import { Ionicons } from '@expo/vector-icons'
 
-const HomeApps = () => (
-	<View style={styles.root}>
-		<TouchableOpacity>
-			<Ionicons name="logo-apple" />
-		</TouchableOpacity>
-	</View>
-)
+import theme from '../../lib/theme'
 
-const styles = StyleSheet.create({})
+const apple = () => {
+	alert('iOS app coming soon')
+}
+
+const android = () => {
+	alert('Android app coming soon')
+}
+
+const HomeApps = () => {
+	const dimensions = useWindowDimensions()
+
+	const margin = dimensions.width < 350 ? 16 : 32
+
+	return (
+		<View style={[styles.root, { top: margin, right: margin }]}>
+			<TouchableOpacity onPress={apple}>
+				<Ionicons name="logo-apple" style={styles.icon} />
+			</TouchableOpacity>
+			<TouchableOpacity onPress={android}>
+				<Ionicons name="logo-android" style={styles.icon} />
+			</TouchableOpacity>
+		</View>
+	)
+}
+
+const styles = StyleSheet.create({
+	root: {
+		position: 'absolute',
+		flexDirection: 'row',
+		gap: 20
+	},
+	icon: {
+		fontSize: 30,
+		color: theme.white
+	}
+})
 
 export default HomeApps

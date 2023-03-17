@@ -79,33 +79,33 @@ const HomeScreen = () => {
 			<TouchableWithoutFeedback
 				onPress={Platform.OS === 'web' ? undefined : Keyboard.dismiss}
 			>
-				<ScrollView
-					bounces={false}
-					contentContainerStyle={styles.scrollContainer}
-					style={styles.scroll}
-				>
-					<Animated.View
-						onStartShouldSetResponder={shouldSetResponder}
-						style={[
-							styles.container,
-							{
-								paddingTop: paddingVertical,
-								paddingBottom: paddingBottom.current,
-								paddingHorizontal:
-									dimensions.width < 350 ? 16 : 32
-							}
-						]}
+				<View style={styles.rootContainer}>
+					<ScrollView
+						bounces={false}
+						contentContainerStyle={styles.scrollContainer}
+						style={styles.scroll}
 					>
-						<View style={styles.title}>
-							<MatchIcon
-								fill={theme.white}
-								style={styles.titleIcon}
-							/>
-							<Text style={styles.titleText}>Match Who</Text>
-						</View>
-						<HomeMainContent />
-						{!isKeyboardShowing && (
-							<>
+						<Animated.View
+							onStartShouldSetResponder={shouldSetResponder}
+							style={[
+								styles.container,
+								{
+									paddingTop: paddingVertical,
+									paddingBottom: paddingBottom.current,
+									paddingHorizontal:
+										dimensions.width < 350 ? 16 : 32
+								}
+							]}
+						>
+							<View style={styles.title}>
+								<MatchIcon
+									fill={theme.white}
+									style={styles.titleIcon}
+								/>
+								<Text style={styles.titleText}>Match Who</Text>
+							</View>
+							<HomeMainContent />
+							{!isKeyboardShowing && (
 								<TouchableOpacity
 									onPress={viewPastGames}
 									style={styles.pastGames}
@@ -114,11 +114,11 @@ const HomeScreen = () => {
 										View Past Games
 									</Text>
 								</TouchableOpacity>
-								{Platform.OS === 'web' && <Apps />}
-							</>
-						)}
-					</Animated.View>
-				</ScrollView>
+							)}
+						</Animated.View>
+					</ScrollView>
+					{Platform.OS === 'web' && <Apps />}
+				</View>
 			</TouchableWithoutFeedback>
 		</KeyboardAvoidingView>
 	)
@@ -129,6 +129,11 @@ const styles = StyleSheet.create({
 		width: '100%',
 		height: '100%',
 		backgroundColor: theme.dark
+	},
+	rootContainer: {
+		position: 'relative',
+		width: '100%',
+		height: '100%'
 	},
 	scrollContainer: {
 		width: '100%',
