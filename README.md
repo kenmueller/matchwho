@@ -11,3 +11,4 @@
 
 -   Create game completed view
 -   Assets
+-   Analytics
