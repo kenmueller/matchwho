@@ -7,6 +7,9 @@ export default interface SavedGame {
 	/** Milliseconds since epoch of when the game ended. */
 	ended: number
 
+	/** Leader name. */
+	leader: string
+
 	/**
 	 * Includes only the top players.
 	 * Sorted from top to bottom by points.

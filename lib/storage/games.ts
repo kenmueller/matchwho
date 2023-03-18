@@ -24,6 +24,7 @@ export const saveGame = async (game: Game) => {
 	map[game.code] = {
 		code: game.code,
 		ended: Date.now(),
+		leader: game.leaderName,
 		players:
 			// `Player` includes more properties than just id, name, points
 			game.results?.players?.map(({ id, name, points }) => ({
