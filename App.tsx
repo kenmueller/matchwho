@@ -16,7 +16,7 @@ const App = () => {
 	return (
 		<PortalProvider>
 			<SafeAreaProvider>
-				<NavigationContainer /* linking={linking} */>
+				<NavigationContainer>
 					<StatusBar style="light" />
 					<AppNavigator />
 				</NavigationContainer>
