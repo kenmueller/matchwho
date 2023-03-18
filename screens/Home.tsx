@@ -88,6 +88,7 @@ const HomeScreen = () => {
 				<View style={styles.rootContainer}>
 					<ScrollView
 						bounces={false}
+						scrollIndicatorInsets={{ right: 1 }} // Fix scrollbar bug
 						keyboardShouldPersistTaps="handled"
 						contentContainerStyle={styles.scrollContainer}
 						style={styles.scroll}

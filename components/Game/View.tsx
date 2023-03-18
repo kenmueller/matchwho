@@ -69,6 +69,7 @@ const GameView = () => {
 			<ScrollView
 				ref={current => (scrollView.current = current)}
 				bounces={false}
+				scrollIndicatorInsets={{ right: 1 }} // Fix scrollbar bug
 				keyboardShouldPersistTaps="handled"
 				contentContainerStyle={[
 					styles.scrollContainer,

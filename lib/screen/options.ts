@@ -9,14 +9,19 @@ const styles = StyleSheet.create({
 	headerTitle: {
 		fontSize: 20,
 		fontWeight: '700'
+	},
+	card: {
+		width: '100%',
+		height: '100%'
 	}
 })
 
-const HEADER_OPTIONS = {
+const SCREEN_OPTIONS = {
 	headerTitleAlign: 'center',
 	headerTintColor: theme.white,
 	headerStyle: styles.header,
-	headerTitleStyle: styles.headerTitle
+	headerTitleStyle: styles.headerTitle,
+	cardStyle: styles.card
 } as const
 
-export default HEADER_OPTIONS
+export default SCREEN_OPTIONS

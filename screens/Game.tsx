@@ -13,7 +13,6 @@ import {
 	useRoute,
 	RouteProp,
 	useNavigation,
-	StackActions,
 	CompositeNavigationProp
 } from '@react-navigation/native'
 import { DrawerNavigationProp } from '@react-navigation/drawer'
@@ -90,7 +89,7 @@ const GameScreen = () => {
 	}, [navigation])
 
 	const close = useCallback(() => {
-		navigation.dispatch(StackActions.replace('Home'))
+		navigation.replace('Home')
 	}, [navigation])
 
 	useEffect(() => {
@@ -100,7 +99,7 @@ const GameScreen = () => {
 				alertError(
 					new HttpError(ErrorCode.NotFound, 'Invalid game code')
 				)
-				navigation.dispatch(StackActions.replace('Home'))
+				navigation.replace('Home')
 			})
 	}, [navigation, code, setMeta])
 
@@ -108,8 +107,7 @@ const GameScreen = () => {
 
 	useEffect(() => {
 		// Transition to the next game
-		if (next)
-			navigation.dispatch(StackActions.replace('Game', { code: next }))
+		if (next) navigation.replace('Game', { code: next })
 	}, [navigation, next])
 
 	useEffect(() => {

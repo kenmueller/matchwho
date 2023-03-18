@@ -17,16 +17,14 @@ const GamePlayersDrawer = () => {
 	return (
 		<ScrollView
 			bounces={false}
+			scrollIndicatorInsets={{ right: 1 }} // Fix scrollbar bug
 			keyboardShouldPersistTaps="handled"
 			contentContainerStyle={[
 				styles.scrollContainer,
 				{
 					paddingTop: Math.max(paddingVertical, insets.top),
 					paddingBottom: Math.max(paddingVertical, insets.bottom)
-				},
-
-				// Fixes scrollview height to parent height
-				Platform.OS === 'web' && { height: 0 }
+				}
 			]}
 			style={styles.scroll}
 		>

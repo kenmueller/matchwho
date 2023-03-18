@@ -7,7 +7,7 @@ import {
 	View,
 	TouchableOpacity
 } from 'react-native'
-import { useNavigation, StackActions } from '@react-navigation/native'
+import { useNavigation } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 
 import { AppScreens } from '../../navigators/App'
@@ -36,9 +36,7 @@ const HomeMainContent = () => {
 			if (!exists)
 				throw new HttpError(ErrorCode.NotFound, 'Game not found')
 
-			navigation.dispatch(
-				StackActions.replace('Game', { code: normalizedCode })
-			)
+			navigation.replace('Game', { code: normalizedCode })
 		} catch (error) {
 			setIsLoading(false)
 			alertError(error)
@@ -51,7 +49,7 @@ const HomeMainContent = () => {
 
 			const newCode = await createGame()
 
-			navigation.dispatch(StackActions.replace('Game', { code: newCode }))
+			navigation.replace('Game', { code: newCode })
 		} catch (error) {
 			setIsLoading(false)
 			alertError(error)

@@ -18,6 +18,11 @@ export const fetchGames = async () => {
 	return Object.values(map).sort((a, b) => b.ended - a.ended)
 }
 
+export const fetchGame = async (code: string) => {
+	const map = await getMap()
+	return code in map ? map[code] : null
+}
+
 export const saveGame = async (game: Game) => {
 	const map = await getMap()
 

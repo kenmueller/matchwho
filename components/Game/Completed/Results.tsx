@@ -7,26 +7,95 @@ import theme from '../../../lib/theme'
 const GameResults = ({
 	players,
 	questions
-}: Pick<SavedGame, 'players' | 'questions'>) => {
-	return (
-		<View style={styles.root}>
-			<Podium players={players} />
-			<Text style={styles.questionsTitle}>Questions</Text>
-			{questions.map(({ name, question, answers }, index) => (
-				<View key={index} style={styles.question}>
-					<Text style={styles.asker}>{name} asked</Text>
-					<Text style={styles.questionTitle}>{question}</Text>
-					{answers.map(({ name, answer }, index) => (
-						<Text key={index} style={styles.answer}>
-							<Text style={styles.answerName}>{name}:</Text>{' '}
-							{answer}
-						</Text>
-					))}
-				</View>
-			))}
-		</View>
-	)
-}
+}: Pick<SavedGame, 'players' | 'questions'>) => (
+	<View style={styles.root}>
+		<Podium players={players} />
+		<Text style={styles.questionsTitle}>Questions</Text>
+		{questions.map(({ name, question, answers }, index) => (
+			<View key={index} style={styles.question}>
+				<Text style={styles.asker}>{name} asked</Text>
+				<Text style={styles.questionTitle}>{question}</Text>
+				{answers.map(({ name, answer }, index) => (
+					<Text key={index} style={styles.answer}>
+						<Text style={styles.answerName}>{name}:</Text> {answer}
+					</Text>
+				))}
+			</View>
+		))}
+		<Text style={{ color: 'white' }}>Hello</Text>
+		<Text style={{ color: 'white' }}>Hello</Text>
+		<Text style={{ color: 'white' }}>Hello</Text>
+		<Text style={{ color: 'white' }}>Hello</Text>
+		<Text style={{ color: 'white' }}>Hello</Text>
+		<Text style={{ color: 'white' }}>Hello</Text>
+		<Text style={{ color: 'white' }}>Hello</Text>
+		<Text style={{ color: 'white' }}>Hello</Text>
+		<Text style={{ color: 'white' }}>Hello</Text>
+		<Text style={{ color: 'white' }}>Hello</Text>
+		<Text style={{ color: 'white' }}>Hello</Text>
+		<Text style={{ color: 'white' }}>Hello</Text>
+		<Text style={{ color: 'white' }}>Hello</Text>
+		<Text style={{ color: 'white' }}>Hello</Text>
+		<Text style={{ color: 'white' }}>Hello</Text>
+		<Text style={{ color: 'white' }}>Hello</Text>
+		<Text style={{ color: 'white' }}>Hello</Text>
+		<Text style={{ color: 'white' }}>Hello</Text>
+		<Text style={{ color: 'white' }}>Hello</Text>
+		<Text style={{ color: 'white' }}>Hello</Text>
+		<Text style={{ color: 'white' }}>Hello</Text>
+		<Text style={{ color: 'white' }}>Hello</Text>
+		<Text style={{ color: 'white' }}>Hello</Text>
+		<Text style={{ color: 'white' }}>Hello</Text>
+		<Text style={{ color: 'white' }}>Hello</Text>
+		<Text style={{ color: 'white' }}>Hello</Text>
+		<Text style={{ color: 'white' }}>Hello</Text>
+		<Text style={{ color: 'white' }}>Hello</Text>
+		<Text style={{ color: 'white' }}>Hello</Text>
+		<Text style={{ color: 'white' }}>Hello</Text>
+		<Text style={{ color: 'white' }}>Hello</Text>
+		<Text style={{ color: 'white' }}>Hello</Text>
+		<Text style={{ color: 'white' }}>Hello</Text>
+		<Text style={{ color: 'white' }}>Hello</Text>
+		<Text style={{ color: 'white' }}>Hello</Text>
+		<Text style={{ color: 'white' }}>Hello</Text>
+		<Text style={{ color: 'white' }}>Hello</Text>
+		<Text style={{ color: 'white' }}>Hello</Text>
+		<Text style={{ color: 'white' }}>Hello</Text>
+		<Text style={{ color: 'white' }}>Hello</Text>
+		<Text style={{ color: 'white' }}>Hello</Text>
+		<Text style={{ color: 'white' }}>Hello</Text>
+		<Text style={{ color: 'white' }}>Hello</Text>
+		<Text style={{ color: 'white' }}>Hello</Text>
+		<Text style={{ color: 'white' }}>Hello</Text>
+		<Text style={{ color: 'white' }}>Hello</Text>
+		<Text style={{ color: 'white' }}>Hello</Text>
+		<Text style={{ color: 'white' }}>Hello</Text>
+		<Text style={{ color: 'white' }}>Hello</Text>
+		<Text style={{ color: 'white' }}>Hello</Text>
+		<Text style={{ color: 'white' }}>Hello</Text>
+		<Text style={{ color: 'white' }}>Hello</Text>
+		<Text style={{ color: 'white' }}>Hello</Text>
+		<Text style={{ color: 'white' }}>Hello</Text>
+		<Text style={{ color: 'white' }}>Hello</Text>
+		<Text style={{ color: 'white' }}>Hello</Text>
+		<Text style={{ color: 'white' }}>Hello</Text>
+		<Text style={{ color: 'white' }}>Hello</Text>
+		<Text style={{ color: 'white' }}>Hello</Text>
+		<Text style={{ color: 'white' }}>Hello</Text>
+		<Text style={{ color: 'white' }}>Hello</Text>
+		<Text style={{ color: 'white' }}>Hello</Text>
+		<Text style={{ color: 'white' }}>Hello</Text>
+		<Text style={{ color: 'white' }}>Hello</Text>
+		<Text style={{ color: 'white' }}>Hello</Text>
+		<Text style={{ color: 'white' }}>Hello</Text>
+		<Text style={{ color: 'white' }}>Hello</Text>
+		<Text style={{ color: 'white' }}>Hello</Text>
+		<Text style={{ color: 'white' }}>Hello</Text>
+		<Text style={{ color: 'white' }}>Hello</Text>
+		<Text style={{ color: 'white' }}>Hello</Text>
+		<Text style={{ color: 'white' }}>Hello</Text>
+	</View>
+)
 
 const styles = StyleSheet.create({
 	root: {

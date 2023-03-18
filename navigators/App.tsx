@@ -3,7 +3,8 @@ import { createStackNavigator } from '@react-navigation/stack'
 import HomeScreen from '../screens/Home'
 import GameNavigator from './Game'
 import PastGames from '../screens/PastGames'
-import HEADER_OPTIONS from '../lib/header/options'
+import PastGame from '../screens/PastGame'
+import SCREEN_OPTIONS from '../lib/screen/options'
 
 export type AppScreens = {
 	Home: undefined
@@ -15,7 +16,7 @@ export type AppScreens = {
 const Stack = createStackNavigator<AppScreens>()
 
 const AppNavigator = () => (
-	<Stack.Navigator initialRouteName="Home" screenOptions={HEADER_OPTIONS}>
+	<Stack.Navigator initialRouteName="Home" screenOptions={SCREEN_OPTIONS}>
 		<Stack.Screen
 			name="Home"
 			component={HomeScreen}
@@ -41,6 +42,14 @@ const AppNavigator = () => (
 				title: 'Past Games | Match Who',
 				headerTitle: 'Past Games'
 			}}
+		/>
+		<Stack.Screen
+			name="PastGame"
+			component={PastGame}
+			options={({ route }) => ({
+				title: `${route.params.code} | Past Games | Match Who`,
+				headerTitle: route.params.code
+			})}
 		/>
 	</Stack.Navigator>
 )

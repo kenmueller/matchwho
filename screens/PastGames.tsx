@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react'
 import { FlatList, StyleSheet, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
-import PastGameRow from '../components/Game/Past/Row'
 
 import alertError from '../lib/error/alert'
 import SavedGame from '../lib/game/saved'
 import { fetchGames } from '../lib/storage/games'
 import theme from '../lib/theme'
+import PastGameRow from '../components/Game/Past/Row'
 
 const paddingVertical = 16
 
@@ -23,6 +23,7 @@ const PastGames = () => {
 		<View style={styles.root}>
 			<FlatList
 				bounces={false}
+				scrollIndicatorInsets={{ right: 1 }} // Fix scrollbar bug
 				data={games}
 				keyExtractor={game => game.code}
 				renderItem={({ item }) => <PastGameRow game={item} />}
