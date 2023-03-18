@@ -104,7 +104,9 @@ const styles = StyleSheet.create({
 		opacity: 0.5
 	},
 	root: {
-		alignItems: 'center'
+		alignItems: 'center',
+		width: '100%',
+		maxWidth: 600
 	},
 	asker: {
 		alignSelf: 'flex-start',

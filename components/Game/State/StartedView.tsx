@@ -49,6 +49,7 @@ const GameStartedView = () => {
 const styles = StyleSheet.create({
 	root: {
 		alignSelf: 'center',
+		alignItems: 'center',
 		marginTop: 'auto',
 		marginBottom: 'auto',
 		width: '100%'

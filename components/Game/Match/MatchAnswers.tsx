@@ -492,7 +492,8 @@ const styles = StyleSheet.create({
 		width: '100%'
 	},
 	question: {
-		alignSelf: 'flex-start',
+		width: '100%',
+		maxWidth: 600,
 		fontSize: 22,
 		fontWeight: '700',
 		color: theme.white,

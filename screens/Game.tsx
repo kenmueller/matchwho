@@ -181,12 +181,31 @@ const GameScreen = () => {
 		})
 	}, [navigation, game, showPlayers])
 
+	const leader = game?.leader
+	const isLeader = leader && leader.id === game.self?.id
+
 	useEffect(() => {
 		navigation.setOptions({
 			headerRight: () => (
-				<TouchableOpacity onPress={close} style={styles.close}>
-					<MaterialIcons name="close" style={styles.closeIcon} />
-				</TouchableOpacity>
+				<View style={styles.right}>
+					{Platform.OS === 'web' &&
+						game?.state === GameState.Completed &&
+						(isLeader ? (
+							<TouchableOpacity style={styles.startNext}>
+								<Text style={styles.startNextText}>
+									Start Next Game
+								</Text>
+							</TouchableOpacity>
+						) : (
+							<Text style={styles.waitingNext}>
+								Waiting {leader ? `for ${leader.name} ` : ''}to
+								start the next game
+							</Text>
+						))}
+					<TouchableOpacity onPress={close} style={styles.close}>
+						<MaterialIcons name="close" style={styles.closeIcon} />
+					</TouchableOpacity>
+				</View>
 			)
 		})
 	}, [navigation, close])
@@ -232,6 +251,26 @@ const styles = StyleSheet.create({
 	},
 	playersIcon: {
 		fontSize: 30,
+		color: theme.white
+	},
+	right: {
+		flexDirection: 'row',
+		gap: 16
+	},
+	startNext: {
+		paddingVertical: 10,
+		paddingHorizontal: 20,
+		backgroundColor: theme.yellowWithOpacity(0.4),
+		borderRadius: 16
+	},
+	startNextText: {
+		fontSize: 20,
+		fontWeight: '700',
+		color: theme.yellow
+	},
+	waitingNext: {
+		fontSize: 20,
+		fontWeight: '700',
 		color: theme.white
 	},
 	close: {
