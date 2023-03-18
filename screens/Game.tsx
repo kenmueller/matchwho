@@ -184,6 +184,20 @@ const GameScreen = () => {
 	const leader = game?.leader
 	const isLeader = leader && leader.id === game.self?.id
 
+	const [startingNext, setStartingNext] = useState(false)
+
+	const startNext = useCallback(() => {
+		try {
+			if (!gameStream) return
+
+			setStartingNext(true)
+			gameStream.send({ key: 'next' })
+		} catch (error) {
+			setStartingNext(false)
+			alertError(error)
+		}
+	}, [gameStream, setStartingNext])
+
 	useEffect(() => {
 		navigation.setOptions({
 			headerRight: () => (
@@ -191,7 +205,14 @@ const GameScreen = () => {
 					{Platform.OS === 'web' &&
 						game?.state === GameState.Completed &&
 						(isLeader ? (
-							<TouchableOpacity style={styles.startNext}>
+							<TouchableOpacity
+								disabled={startingNext}
+								onPress={startNext}
+								style={[
+									styles.startNext,
+									startingNext && styles.disabled
+								]}
+							>
 								<Text style={styles.startNextText}>
 									Start Next Game
 								</Text>
@@ -208,7 +229,7 @@ const GameScreen = () => {
 				</View>
 			)
 		})
-	}, [navigation, close])
+	}, [navigation, game, leader, isLeader, startingNext, startNext, close])
 
 	return (
 		<KeyboardAvoidingView
@@ -255,23 +276,28 @@ const styles = StyleSheet.create({
 	},
 	right: {
 		flexDirection: 'row',
+		alignItems: 'center',
 		gap: 16
 	},
 	startNext: {
-		paddingVertical: 10,
-		paddingHorizontal: 20,
+		paddingVertical: 6,
+		paddingHorizontal: 16,
 		backgroundColor: theme.yellowWithOpacity(0.4),
-		borderRadius: 16
+		borderRadius: 16,
+		...(Platform.OS === 'web' ? { cursor: 'pointer' } : {})
 	},
 	startNextText: {
-		fontSize: 20,
+		fontSize: 16,
 		fontWeight: '700',
 		color: theme.yellow
 	},
 	waitingNext: {
-		fontSize: 20,
+		fontSize: 16,
 		fontWeight: '700',
 		color: theme.white
+	},
+	disabled: {
+		opacity: 0.5
 	},
 	close: {
 		marginRight: 24,
