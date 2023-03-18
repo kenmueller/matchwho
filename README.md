@@ -10,5 +10,4 @@
 ### Next release
 
 -   Create game completed view
--   Meta tags
 -   Assets
