@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect } from 'react'
+import { useRef, useState, useEffect, useCallback } from 'react'
 import { View, StyleSheet, useWindowDimensions } from 'react-native'
 
 import Bounds from '../../../lib/bounds'
@@ -18,13 +18,21 @@ const GameResultsPodium = ({ players }: { players: SavedPlayer[] }) => {
 
 	const collapsed = bounds ? bounds.width < 330 : false
 
-	useEffect(() => {
+	const updateBounds = useCallback(() => {
 		if (!root.current) return
 		getBounds(root.current).then(setBounds).catch(alertError)
-	}, [root, setBounds, dimensions])
+	}, [root, setBounds])
+
+	useEffect(() => {
+		updateBounds()
+	}, [updateBounds, dimensions])
 
 	return (
-		<View ref={current => (root.current = current)} style={styles.root}>
+		<View
+			ref={current => (root.current = current)}
+			onLayout={updateBounds}
+			style={styles.root}
+		>
 			{bounds && (
 				<View
 					style={[
