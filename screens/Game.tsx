@@ -38,6 +38,7 @@ import alertError from '../lib/error/alert'
 import HttpError from '../lib/error/http'
 import ErrorCode from '../lib/error/code'
 import gameStatus from '../lib/game/status'
+import { saveGame } from '../lib/storage/games'
 
 const GameScreen = () => {
 	const navigation =
@@ -110,6 +111,12 @@ const GameScreen = () => {
 				StackActions.replace('Game', { code: game.results.next })
 			)
 	}, [navigation, game])
+
+	useEffect(() => {
+		// Don't save game when there is a next game because it's transitioning to the next game
+		if (game?.results && !game.results.next)
+			saveGame(game).catch(alertError)
+	}, [game, saveGame])
 
 	useEffect(() => {
 		// Spectate if game has already started

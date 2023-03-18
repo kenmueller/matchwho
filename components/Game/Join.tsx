@@ -7,12 +7,11 @@ import {
 	StyleSheet,
 	Platform
 } from 'react-native'
-import AsyncStorage from '@react-native-async-storage/async-storage'
 
 import theme from '../../lib/theme'
 import MAX_NAME_LENGTH from '../../lib/game/name'
 import alertError from '../../lib/error/alert'
-import { STORAGE_NAME_KEY } from '../../lib/storage/keys'
+import { fetchName, saveName } from '../../lib/storage/name'
 
 const JoinGame = ({
 	joining,
@@ -38,18 +37,14 @@ const JoinGame = ({
 
 	const setName = useCallback(
 		(newName: string) => {
-			AsyncStorage.setItem(STORAGE_NAME_KEY, newName).catch(alertError)
 			_setName(newName)
+			saveName(newName).catch(alertError)
 		},
 		[_setName]
 	)
 
 	useEffect(() => {
-		AsyncStorage.getItem(STORAGE_NAME_KEY)
-			.then(savedName => {
-				_setName(savedName ?? '')
-			})
-			.catch(alertError)
+		fetchName().then(_setName).catch(alertError)
 	}, [_setName])
 
 	return (
