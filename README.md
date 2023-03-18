@@ -10,4 +10,3 @@
 ### Next release
 
 -   Create game completed view
--   Save games in local storage and display them in a list
