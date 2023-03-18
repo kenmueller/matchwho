@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
 		height: 18
 	},
 	pointsValue: {
-		marginLeft: 8,
+		marginLeft: 4,
 		fontWeight: '700',
 		color: theme.white
 	},

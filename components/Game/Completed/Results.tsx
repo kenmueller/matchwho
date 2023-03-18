@@ -30,6 +30,7 @@ const styles = StyleSheet.create({
 		width: '100%'
 	},
 	questionsTitle: {
+		marginTop: 24,
 		fontSize: 30,
 		fontWeight: '700',
 		color: theme.white

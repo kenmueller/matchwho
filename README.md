@@ -8,5 +8,3 @@
 -   Visit links on mobile to redirect to app
 
 ### Next release
-
--   Create game completed view
