@@ -1,37 +1,39 @@
 {
-	"name": "matchwho",
-	"version": "1.0.0",
-	"main": "node_modules/expo/AppEntry.js",
-	"scripts": {
-		"dev": "env-cmd npx expo start",
-		"export": "npx expo export:web"
-	},
-	"dependencies": {
-		"@expo/vector-icons": "^13.0.0",
-		"@expo/webpack-config": "^18.0.1",
-		"@gorhom/portal": "^1.0.14",
-		"@react-navigation/drawer": "^6.6.2",
-		"@react-navigation/native": "^6.1.6",
-		"@react-navigation/stack": "^6.3.16",
-		"expo": "^48.0.5",
-		"expo-clipboard": "~4.1.2",
-		"expo-status-bar": "^1.4.4",
-		"react": "^18.2.0",
-		"react-dom": "^18.2.0",
-		"react-native": "^0.71.3",
-		"react-native-gesture-handler": "~2.9.0",
-		"react-native-reanimated": "~2.14.4",
-		"react-native-safe-area-context": "~4.5.0",
-		"react-native-svg": "~13.4.0",
-		"react-native-web": "^0.18.12",
-		"@react-native-async-storage/async-storage": "~1.17.11"
-	},
-	"devDependencies": {
-		"@babel/core": "^7.21.0",
-		"@babel/plugin-proposal-export-namespace-from": "^7.18.9",
-		"@types/react": "^18.0.28",
-		"env-cmd": "^10.1.0",
-		"typescript": "^4.9.5"
-	},
-	"private": true
+  "name": "matchwho",
+  "version": "1.0.0",
+  "main": "node_modules/expo/AppEntry.js",
+  "scripts": {
+    "dev": "env-cmd npx expo start",
+    "export": "npx expo export:web"
+  },
+  "dependencies": {
+    "@expo/vector-icons": "^13.0.0",
+    "@expo/webpack-config": "^18.0.1",
+    "@gorhom/portal": "^1.0.14",
+    "@react-navigation/drawer": "^6.6.2",
+    "@react-navigation/native": "^6.1.6",
+    "@react-navigation/stack": "^6.3.16",
+    "expo": "^48.0.5",
+    "expo-clipboard": "~4.1.2",
+    "expo-status-bar": "^1.4.4",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-native": "^0.71.3",
+    "react-native-gesture-handler": "~2.9.0",
+    "react-native-reanimated": "~2.14.4",
+    "react-native-safe-area-context": "~4.5.0",
+    "react-native-svg": "~13.4.0",
+    "react-native-web": "^0.18.12",
+    "@react-native-async-storage/async-storage": "~1.17.11",
+    "expo-screen-orientation": "~5.1.1",
+    "expo-device": "~5.2.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.21.0",
+    "@babel/plugin-proposal-export-namespace-from": "^7.18.9",
+    "@types/react": "^18.0.28",
+    "env-cmd": "^10.1.0",
+    "typescript": "^4.9.5"
+  },
+  "private": true
 }
