@@ -10,4 +10,3 @@
 ### Next release
 
 -   Create game completed view
--   Assets
