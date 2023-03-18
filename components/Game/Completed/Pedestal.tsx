@@ -27,10 +27,10 @@ const GameResultsPodium = ({
 				<View style={styles.points}>
 					{player && (
 						<>
-							<PointIcon
+							{/* <PointIcon
 								fill={first ? theme.yellow : theme.white}
 								style={styles.pointsIcon}
-							/>
+							/> */}
 							<Text
 								style={[
 									styles.pointsValue,

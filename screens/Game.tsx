@@ -104,13 +104,13 @@ const GameScreen = () => {
 			})
 	}, [navigation, code, setMeta])
 
+	const next = game?.results?.next
+
 	useEffect(() => {
 		// Transition to the next game
-		if (game?.results?.next)
-			navigation.dispatch(
-				StackActions.replace('Game', { code: game.results.next })
-			)
-	}, [navigation, game])
+		if (next)
+			navigation.dispatch(StackActions.replace('Game', { code: next }))
+	}, [navigation, next])
 
 	useEffect(() => {
 		// Don't save game when there is a next game because it's transitioning to the next game
@@ -313,7 +313,6 @@ const styles = StyleSheet.create({
 		backgroundColor: theme.dark
 	},
 	container: {
-		position: 'relative',
 		width: '100%',
 		height: '100%',
 		justifyContent: 'center',
