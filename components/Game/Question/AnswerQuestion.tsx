@@ -42,7 +42,14 @@ const GameAnswerQuestion = () => {
 		input.current?.focus()
 	}, [input])
 
-	return game.self?.answer ? (
+	return !game.self ? (
+		<Message
+			title={`Players are answering ${
+				game.turn?.player.name ?? '(error)'
+			}'s question`}
+			description={game.turn?.question ?? '(error)'}
+		/>
+	) : game.self?.answer ? (
 		<Message title="Waiting for other players to answer">
 			<View style={styles.self}>
 				<Text style={styles.selfQuestion}>
