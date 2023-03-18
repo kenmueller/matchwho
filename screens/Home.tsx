@@ -122,60 +122,6 @@ const HomeScreen = () => {
 									</Text>
 								</TouchableOpacity>
 							)}
-							<Text>hello</Text>
-							<Text>hello</Text>
-							<Text>hello</Text>
-							<Text>hello</Text>
-							<Text>hello</Text>
-							<Text>hello</Text>
-							<Text>hello</Text>
-							<Text>hello</Text>
-							<Text>hello</Text>
-							<Text>hello</Text>
-							<Text>hello</Text>
-							<Text>hello</Text>
-							<Text>hello</Text>
-							<Text>hello</Text>
-							<Text>hello</Text>
-							<Text>hello</Text>
-							<Text>hello</Text>
-							<Text>hello</Text>
-							<Text>hello</Text>
-							<Text>hello</Text>
-							<Text>hello</Text>
-							<Text>hello</Text>
-							<Text>hello</Text>
-							<Text>hello</Text>
-							<Text>hello</Text>
-							<Text>hello</Text>
-							<Text>hello</Text>
-							<Text>hello</Text>
-							<Text>hello</Text>
-							<Text>hello</Text>
-							<Text>hello</Text>
-							<Text>hello</Text>
-							<Text>hello</Text>
-							<Text>hello</Text>
-							<Text>hello</Text>
-							<Text>hello</Text>
-							<Text>hello</Text>
-							<Text>hello</Text>
-							<Text>hello</Text>
-							<Text>hello</Text>
-							<Text>hello</Text>
-							<Text>hello</Text>
-							<Text>hello</Text>
-							<Text>hello</Text>
-							<Text>hello</Text>
-							<Text>hello</Text>
-							<Text>hello</Text>
-							<Text>hello</Text>
-							<Text>hello</Text>
-							<Text>hello</Text>
-							<Text>hello</Text>
-							<Text>hello</Text>
-							<Text>hello</Text>
-							<Text>hello</Text>
 						</Animated.View>
 					</ScrollView>
 					{Platform.OS === 'web' && !mobileOS && <Apps />}
