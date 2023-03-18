@@ -65,11 +65,6 @@ const GameScreen = () => {
 					case 'game':
 						setGame(data.value)
 						break
-					case 'next':
-						navigation.dispatch(
-							StackActions.replace('Game', { code: data.value })
-						)
-						break
 				}
 			})
 
@@ -107,6 +102,14 @@ const GameScreen = () => {
 				navigation.dispatch(StackActions.replace('Home'))
 			})
 	}, [navigation, code, setMeta])
+
+	useEffect(() => {
+		// Transition to the next game
+		if (game?.results?.next)
+			navigation.dispatch(
+				StackActions.replace('Game', { code: game.results.next })
+			)
+	}, [navigation, game])
 
 	useEffect(() => {
 		// Spectate if game has already started
