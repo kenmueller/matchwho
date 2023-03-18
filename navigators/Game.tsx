@@ -33,6 +33,9 @@ const GameNavigator = () => {
 					drawerContent={PlayersDrawer}
 					screenOptions={{
 						...SCREEN_OPTIONS,
+						swipeEnabled:
+							// Only allow viewing of the sidebar if you've joined the game
+							Boolean(game),
 						drawerType:
 							// Only make the drawer permanent if you've joined the game on the web
 							Platform.OS === 'web' && game
