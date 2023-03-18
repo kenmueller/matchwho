@@ -9,6 +9,7 @@ export type AppScreens = {
 	Home: undefined
 	Game: { code: string }
 	PastGames: undefined
+	PastGame: { code: string }
 }
 
 const Stack = createStackNavigator<AppScreens>()
