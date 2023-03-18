@@ -18,8 +18,8 @@ import JoiningView from './State/JoiningView'
 import StartedView from './State/StartedView'
 import CompletedView from './State/CompletedView'
 import ScrollViewContext from '../../lib/scrollView/context'
+import useKeyboard from '../../lib/useKeyboard'
 
-const shouldSetResponder = () => true
 const paddingVertical = 24
 
 const GameView = () => {
@@ -30,6 +30,11 @@ const GameView = () => {
 	if (!game) return null
 
 	const scrollView = useRef<ScrollView | null>(null)
+
+	const isKeyboardShowing = useKeyboard({
+		showEvent: 'keyboardWillShow',
+		hideEvent: 'keyboardWillHide'
+	})
 
 	return (
 		<>
@@ -48,7 +53,7 @@ const GameView = () => {
 				style={styles.scroll}
 			>
 				<View
-					onStartShouldSetResponder={shouldSetResponder}
+					onStartShouldSetResponder={() => !isKeyboardShowing}
 					style={[
 						styles.container,
 						{ paddingHorizontal: dimensions.width < 350 ? 16 : 32 }

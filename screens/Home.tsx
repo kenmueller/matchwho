@@ -23,8 +23,8 @@ import HomeMainContent from '../components/Home/Main'
 import Apps from '../components/Home/Apps'
 import getMobileOS from '../lib/mobile/os'
 import { ANDROID_URL, IOS_URL } from '../lib/apps'
+import useKeyboard from '../lib/useKeyboard'
 
-const shouldSetResponder = () => true
 const paddingVertical = 80
 
 const mobileOS = getMobileOS()
@@ -35,41 +35,30 @@ const HomeScreen = () => {
 
 	const navigation = useNavigation<StackNavigationProp<AppScreens, 'Home'>>()
 
-	const [isKeyboardShowing, setIsKeyboardShowing] = useState(false)
-
 	const defaultPaddingBottom = Math.max(paddingVertical, insets.bottom)
-	const paddingBottom = useRef(new Animated.Value(defaultPaddingBottom))
+	const paddingBottom = useRef(
+		new Animated.Value(defaultPaddingBottom)
+	).current
 
-	useEffect(() => {
-		const showSubscription = Keyboard.addListener(
-			'keyboardWillShow',
-			() => {
-				setIsKeyboardShowing(true)
+	const onKeyboardChange = useCallback(
+		(isShowing: boolean) => {
+			const value = isShowing ? 0 : defaultPaddingBottom
 
-				Animated.timing(paddingBottom.current, {
-					toValue: 0,
-					useNativeDriver: false
-				}).start()
-			}
-		)
+			Platform.OS === 'android'
+				? paddingBottom.setValue(value)
+				: Animated.timing(paddingBottom, {
+						toValue: value,
+						useNativeDriver: false
+				  }).start()
+		},
+		[defaultPaddingBottom, paddingBottom]
+	)
 
-		const hideSubscription = Keyboard.addListener(
-			'keyboardWillHide',
-			() => {
-				setIsKeyboardShowing(false)
-
-				Animated.timing(paddingBottom.current, {
-					toValue: defaultPaddingBottom,
-					useNativeDriver: false
-				}).start()
-			}
-		)
-
-		return () => {
-			showSubscription.remove()
-			hideSubscription.remove()
-		}
-	}, [setIsKeyboardShowing, defaultPaddingBottom, paddingBottom])
+	const isKeyboardShowing = useKeyboard({
+		showEvent: 'keyboardWillShow',
+		hideEvent: 'keyboardWillHide',
+		onChange: onKeyboardChange
+	})
 
 	const viewPastGames = useCallback(() => {
 		navigation.push('PastGames')
@@ -104,12 +93,12 @@ const HomeScreen = () => {
 						style={styles.scroll}
 					>
 						<Animated.View
-							onStartShouldSetResponder={shouldSetResponder}
+							onStartShouldSetResponder={() => !isKeyboardShowing}
 							style={[
 								styles.container,
 								{
 									paddingTop: paddingVertical,
-									paddingBottom: paddingBottom.current,
+									paddingBottom: paddingBottom,
 									paddingHorizontal:
 										dimensions.width < 350 ? 16 : 32
 								}
@@ -133,6 +122,60 @@ const HomeScreen = () => {
 									</Text>
 								</TouchableOpacity>
 							)}
+							<Text>hello</Text>
+							<Text>hello</Text>
+							<Text>hello</Text>
+							<Text>hello</Text>
+							<Text>hello</Text>
+							<Text>hello</Text>
+							<Text>hello</Text>
+							<Text>hello</Text>
+							<Text>hello</Text>
+							<Text>hello</Text>
+							<Text>hello</Text>
+							<Text>hello</Text>
+							<Text>hello</Text>
+							<Text>hello</Text>
+							<Text>hello</Text>
+							<Text>hello</Text>
+							<Text>hello</Text>
+							<Text>hello</Text>
+							<Text>hello</Text>
+							<Text>hello</Text>
+							<Text>hello</Text>
+							<Text>hello</Text>
+							<Text>hello</Text>
+							<Text>hello</Text>
+							<Text>hello</Text>
+							<Text>hello</Text>
+							<Text>hello</Text>
+							<Text>hello</Text>
+							<Text>hello</Text>
+							<Text>hello</Text>
+							<Text>hello</Text>
+							<Text>hello</Text>
+							<Text>hello</Text>
+							<Text>hello</Text>
+							<Text>hello</Text>
+							<Text>hello</Text>
+							<Text>hello</Text>
+							<Text>hello</Text>
+							<Text>hello</Text>
+							<Text>hello</Text>
+							<Text>hello</Text>
+							<Text>hello</Text>
+							<Text>hello</Text>
+							<Text>hello</Text>
+							<Text>hello</Text>
+							<Text>hello</Text>
+							<Text>hello</Text>
+							<Text>hello</Text>
+							<Text>hello</Text>
+							<Text>hello</Text>
+							<Text>hello</Text>
+							<Text>hello</Text>
+							<Text>hello</Text>
+							<Text>hello</Text>
 						</Animated.View>
 					</ScrollView>
 					{Platform.OS === 'web' && !mobileOS && <Apps />}
