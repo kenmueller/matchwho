@@ -1,17 +1,18 @@
 import { useRef, useState, useEffect, useCallback } from 'react'
-import { View, StyleSheet, useWindowDimensions } from 'react-native'
+import { View, StyleSheet } from 'react-native'
 
 import Bounds from '../../../lib/bounds'
 import getBounds from '../../../lib/bounds/get'
 import alertError from '../../../lib/error/alert'
 import SavedPlayer from '../../../lib/game/saved/player'
 import Pedestal from './Pedestal'
+import useFixedWindowDimensions from '../../../lib/useFixedWindowDimensions'
 
 const INDICES = [1, 0, 2]
 const COLLAPSED_INDICES = [0, 1, 2]
 
 const GameResultsPodium = ({ players }: { players: SavedPlayer[] }) => {
-	const dimensions = useWindowDimensions()
+	const dimensions = useFixedWindowDimensions()
 
 	const root = useRef<View | null>(null)
 	const [bounds, setBounds] = useState<Bounds | null>(null)

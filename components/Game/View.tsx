@@ -5,7 +5,6 @@ import {
 	StyleSheet,
 	Platform,
 	ScrollView,
-	useWindowDimensions,
 	TouchableOpacity
 } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
@@ -22,12 +21,13 @@ import ScrollViewContext from '../../lib/scrollView/context'
 import useKeyboard from '../../lib/useKeyboard'
 import GameStreamContext from '../../lib/game/context/stream'
 import alertError from '../../lib/error/alert'
+import useFixedWindowDimensions from '../../lib/useFixedWindowDimensions'
 
 const paddingVertical = 24
 const completedVerticalPadding = 8
 
 const GameView = () => {
-	const dimensions = useWindowDimensions()
+	const dimensions = useFixedWindowDimensions()
 	const insets = useSafeAreaInsets()
 
 	const [gameStream] = useContext(GameStreamContext)

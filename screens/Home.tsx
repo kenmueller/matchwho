@@ -9,7 +9,6 @@ import {
 	View,
 	TouchableOpacity,
 	ScrollView,
-	useWindowDimensions,
 	Animated
 } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
@@ -24,13 +23,14 @@ import Apps from '../components/Home/Apps'
 import getMobileOS from '../lib/mobile/os'
 import { ANDROID_URL, IOS_URL } from '../lib/apps'
 import useKeyboard from '../lib/useKeyboard'
+import useFixedWindowDimensions from '../lib/useFixedWindowDimensions'
 
 const paddingVertical = 80
 
 const mobileOS = getMobileOS()
 
 const HomeScreen = () => {
-	const dimensions = useWindowDimensions()
+	const dimensions = useFixedWindowDimensions()
 	const insets = useSafeAreaInsets()
 
 	const navigation = useNavigation<StackNavigationProp<AppScreens, 'Home'>>()

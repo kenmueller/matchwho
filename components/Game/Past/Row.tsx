@@ -1,11 +1,5 @@
 import { useCallback } from 'react'
-import {
-	StyleSheet,
-	Text,
-	View,
-	TouchableOpacity,
-	useWindowDimensions
-} from 'react-native'
+import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 
@@ -14,9 +8,10 @@ import formatDate from '../../../lib/format/date'
 import theme from '../../../lib/theme'
 import LeaderIcon from '../../../icons/Leader'
 import { AppScreens } from '../../../navigators/App'
+import useFixedWindowDimensions from '../../../lib/useFixedWindowDimensions'
 
 const PastGameRow = ({ game }: { game: SavedGame }) => {
-	const dimensions = useWindowDimensions()
+	const dimensions = useFixedWindowDimensions()
 
 	const navigation =
 		useNavigation<StackNavigationProp<AppScreens, 'PastGames'>>()

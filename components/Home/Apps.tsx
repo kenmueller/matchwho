@@ -1,13 +1,9 @@
-import {
-	StyleSheet,
-	TouchableOpacity,
-	useWindowDimensions,
-	View
-} from 'react-native'
+import { StyleSheet, TouchableOpacity, View } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 
 import theme from '../../lib/theme'
 import { ANDROID_URL, IOS_URL } from '../../lib/apps'
+import useFixedWindowDimensions from '../../lib/useFixedWindowDimensions'
 
 const ios = () => {
 	window.open(IOS_URL)
@@ -18,7 +14,7 @@ const android = () => {
 }
 
 const HomeApps = () => {
-	const dimensions = useWindowDimensions()
+	const dimensions = useFixedWindowDimensions()
 
 	const margin = dimensions.width < 350 ? 16 : 32
 

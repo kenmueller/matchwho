@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
-import { ScrollView, StyleSheet, useWindowDimensions, View } from 'react-native'
+import { ScrollView, StyleSheet, View } from 'react-native'
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
@@ -10,11 +10,12 @@ import { fetchGame } from '../lib/storage/games'
 import theme from '../lib/theme'
 import { AppScreens } from '../navigators/App'
 import GameResults from '../components/Game/Completed/Results'
+import useFixedWindowDimensions from '../lib/useFixedWindowDimensions'
 
 const paddingVertical = 24
 
 const PastGame = () => {
-	const dimensions = useWindowDimensions()
+	const dimensions = useFixedWindowDimensions()
 	const insets = useSafeAreaInsets()
 
 	const navigation =

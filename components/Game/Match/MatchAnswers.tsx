@@ -12,8 +12,7 @@ import {
 	View,
 	TouchableOpacity,
 	GestureResponderEvent,
-	Platform,
-	useWindowDimensions
+	Platform
 } from 'react-native'
 import { Portal } from '@gorhom/portal'
 
@@ -28,6 +27,7 @@ import boundsContains from '../../../lib/bounds/contains'
 import ScrollViewContext from '../../../lib/scrollView/context'
 import boundsRelativeTo from '../../../lib/bounds/relative'
 import addPoints from '../../../lib/point/add'
+import useFixedWindowDimensions from '../../../lib/useFixedWindowDimensions'
 
 /** How far away the link is from the node. */
 const SPACING = 8
@@ -36,7 +36,7 @@ const shouldSetResponder = () => true
 const responderTerminationRequest = () => false
 
 const GameMatchAnswers = () => {
-	const dimensions = useWindowDimensions()
+	const dimensions = useFixedWindowDimensions()
 
 	const [gameStream] = useContext(GameStreamContext)
 	const [game] = useContext(GameContext)
