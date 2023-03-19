@@ -38,6 +38,8 @@ import HttpError from '../lib/error/http'
 import ErrorCode from '../lib/error/code'
 import gameStatus from '../lib/game/status'
 import { saveGame } from '../lib/storage/games'
+import useUnloadMessage from '../lib/useUnloadMessage'
+import confirm from '../lib/confirm'
 
 const GameScreen = () => {
 	const navigation =
@@ -88,9 +90,19 @@ const GameScreen = () => {
 		navigation.openDrawer()
 	}, [navigation])
 
-	const close = useCallback(() => {
+	const unloadMessage =
+		game && game.state !== GameState.Completed
+			? 'Are you sure you want to exit this game?'
+			: null
+
+	if (Platform.OS === 'web') useUnloadMessage(unloadMessage)
+
+	const close = useCallback(async () => {
+		if (unloadMessage && !(await confirm('Exit Game', unloadMessage)))
+			return
+
 		navigation.replace('Home')
-	}, [navigation])
+	}, [unloadMessage, navigation])
 
 	useEffect(() => {
 		gameMeta(code)

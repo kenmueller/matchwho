@@ -10,7 +10,5 @@
 ### Next release
 
 -   Fix layout shift on done matching answers
--   Ask to close on web
--   Ask to press x
 -   Green and red to indicate correct on matching answers
 -   Keep session after going to another app
