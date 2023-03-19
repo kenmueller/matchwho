@@ -467,14 +467,20 @@ const GameMatchAnswers = () => {
 				</TouchableOpacity>
 			)}
 			{nodeLinkPositions &&
-				(correct?.matches ?? matches).map(([player, answerIndex]) => (
-					<Link
-						key={player}
-						from={nodeLinkPositions[player]}
-						to={nodeLinkPositions[answerIndex.toString()]}
-						onPress={disabled ? undefined : () => unmatch(player)}
-					/>
-				))}
+				(correct?.matches ?? matches).map(
+					([player, answerIndex]) =>
+						player in nodeLinkPositions &&
+						answerIndex.toString() in nodeLinkPositions && (
+							<Link
+								key={player}
+								from={nodeLinkPositions[player]}
+								to={nodeLinkPositions[answerIndex.toString()]}
+								onPress={
+									disabled ? undefined : () => unmatch(player)
+								}
+							/>
+						)
+				)}
 			<Portal>
 				{!disabled && dragging && start && end && (
 					// Link to mouse cursor
