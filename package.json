@@ -4,7 +4,7 @@
 	"main": "node_modules/expo/AppEntry.js",
 	"scripts": {
 		"dev": "env-cmd npx expo start",
-		"export": "env-cmd npx expo export:web",
+		"export": "npx expo export:web",
 		"update": "env-cmd eas update",
 		"build": "env-cmd eas build"
 	},
