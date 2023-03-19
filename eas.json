@@ -1,0 +1,32 @@
+{
+	"cli": {
+		"version": ">= 3.8.1",
+		"promptToConfigurePushNotifications": false
+	},
+	"build": {
+		"development": {
+			"channel": "development",
+			"developmentClient": true,
+			"distribution": "internal",
+			"ios": {
+				"resourceClass": "m-medium"
+			}
+		},
+		"preview": {
+			"channel": "preview",
+			"distribution": "internal",
+			"ios": {
+				"resourceClass": "m-medium"
+			}
+		},
+		"production": {
+			"channel": "production",
+			"ios": {
+				"resourceClass": "m-medium"
+			}
+		}
+	},
+	"submit": {
+		"production": {}
+	}
+}
