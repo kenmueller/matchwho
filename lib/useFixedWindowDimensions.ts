@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Dimensions, useWindowDimensions } from 'react-native'
+import equal from 'deep-equal'
 
 import _Dimensions from './dimensions'
 
@@ -18,7 +19,13 @@ const useFixedWindowDimensions = () => {
 	// Poll dimensions
 	useEffect(() => {
 		const interval = setInterval(() => {
-			setDimensions(Dimensions.get('window'))
+			const newDimensions = Dimensions.get('window')
+
+			setDimensions(dimensions =>
+				equal(dimensions, newDimensions, { strict: true })
+					? dimensions
+					: newDimensions
+			)
 		}, 500)
 
 		return () => {
