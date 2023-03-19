@@ -50,7 +50,10 @@ const GameAskQuestion = () => {
 				multiline
 				numberOfLines={6}
 				onChangeText={setQuestion}
-				style={styles.input}
+				style={[
+					styles.input,
+					Platform.OS === 'ios' && { minHeight: 140 }
+				]}
 			/>
 			<TouchableOpacity
 				disabled={asking || disabled}
