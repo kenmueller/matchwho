@@ -8,10 +8,12 @@ const shouldSetResponder = () => true
 const Link = ({
 	from,
 	to,
+	color = theme.white,
 	onPress
 }: {
 	from: Point
 	to: Point
+	color?: string
 	onPress?: (event: GestureResponderEvent) => void
 }) => {
 	const angle = Math.atan2(to.y - from.y, to.x - from.x)
@@ -35,7 +37,7 @@ const Link = ({
 						{ rotate: `${angle}rad` },
 						{ translateX: distance / 2 }
 					],
-					backgroundColor: theme.white,
+					backgroundColor: color,
 					borderRadius: 1.6
 				}}
 			/>

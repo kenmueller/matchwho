@@ -28,6 +28,7 @@ import ScrollViewContext from '../../../lib/scrollView/context'
 import boundsRelativeTo from '../../../lib/bounds/relative'
 import addPoints from '../../../lib/point/add'
 import useFixedWindowDimensions from '../../../lib/useFixedWindowDimensions'
+import MatchLink from './MatchLink'
 
 /** How far away the link is from the node. */
 const SPACING = 8
@@ -469,20 +470,15 @@ const GameMatchAnswers = () => {
 				)}
 			</View>
 			{nodeLinkPositions &&
-				(correct?.matches ?? matches).map(
-					([player, answerIndex]) =>
-						player in nodeLinkPositions &&
-						answerIndex.toString() in nodeLinkPositions && (
-							<Link
-								key={player}
-								from={nodeLinkPositions[player]}
-								to={nodeLinkPositions[answerIndex.toString()]}
-								onPress={
-									disabled ? undefined : () => unmatch(player)
-								}
-							/>
-						)
-				)}
+				(correct?.matches ?? matches).map(([player, answer]) => (
+					<MatchLink
+						key={player}
+						player={player}
+						answer={answer}
+						positions={nodeLinkPositions}
+						onPress={disabled ? undefined : () => unmatch(player)}
+					/>
+				))}
 			<Portal>
 				{!disabled && dragging && start && end && (
 					// Link to mouse cursor
