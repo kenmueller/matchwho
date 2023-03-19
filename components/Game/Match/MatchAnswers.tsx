@@ -440,32 +440,34 @@ const GameMatchAnswers = () => {
 					</>
 				)}
 			</View>
-			{correct ? (
-				<Text style={styles.correct}>
-					Showing correct answers ({correct.count}/
-					{correct.matches.length})
-				</Text>
-			) : disabled && current ? (
-				<Text style={styles.matching}>
-					Waiting for {current.name} to finish matching
-				</Text>
-			) : null}
-			{myTurn && (
-				<TouchableOpacity
-					disabled={submitLoading || submitDisabled}
-					onPress={correct ? done : matched}
-					style={[
-						styles.submit,
-						correct && styles.submitCorrect,
-						(submitLoading || submitDisabled) &&
-							styles.submitDisabled
-					]}
-				>
-					<Text style={styles.submitText}>
-						{correct ? 'Done' : 'Show Correct Matches'}
+			<View style={styles.info}>
+				{correct ? (
+					<Text numberOfLines={1} style={styles.correct}>
+						Showing correct answers ({correct.count}/
+						{correct.matches.length})
 					</Text>
-				</TouchableOpacity>
-			)}
+				) : disabled && current ? (
+					<Text numberOfLines={1} style={styles.matching}>
+						Waiting for {current.name} to finish matching
+					</Text>
+				) : null}
+				{myTurn && (
+					<TouchableOpacity
+						disabled={submitLoading || submitDisabled}
+						onPress={correct ? done : matched}
+						style={[
+							styles.submit,
+							correct && styles.submitCorrect,
+							(submitLoading || submitDisabled) &&
+								styles.submitDisabled
+						]}
+					>
+						<Text numberOfLines={1} style={styles.submitText}>
+							{correct ? 'Done' : 'Show Correct Matches'}
+						</Text>
+					</TouchableOpacity>
+				)}
+			</View>
 			{nodeLinkPositions &&
 				(correct?.matches ?? matches).map(
 					([player, answerIndex]) =>
@@ -535,10 +537,16 @@ const styles = StyleSheet.create({
 		color: theme.white,
 		...(Platform.OS === 'web' ? { wordBreak: 'break-word' } : {})
 	},
+	info: {
+		// Must sum to submit.height + submit.marginTop
+		height: 47 + (12 + 23 + 4),
+
+		alignItems: 'center'
+	},
 	correct: {
-		// Must add to submit.marginTop to prevent layout from shifting
+		// Must sum to submit.marginTop to prevent layout from shifting
 		marginTop: 12,
-		height: 20,
+		height: 23,
 		marginBottom: 4,
 
 		fontSize: 16,
@@ -552,8 +560,9 @@ const styles = StyleSheet.create({
 		color: theme.yellow
 	},
 	submit: {
-		marginTop: 36,
-		paddingVertical: 10,
+		justifyContent: 'center',
+		height: 47,
+		marginTop: 12 + 23 + 4,
 		paddingHorizontal: 20,
 		backgroundColor: theme.yellowWithOpacity(0.4),
 		borderRadius: 16

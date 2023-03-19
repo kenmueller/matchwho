@@ -9,6 +9,5 @@
 
 ### Next release
 
--   Fix layout shift on done matching answers
 -   Green and red to indicate correct on matching answers
 -   Keep session after going to another app
