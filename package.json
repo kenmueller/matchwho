@@ -6,7 +6,8 @@
 		"dev": "env-cmd npx expo start",
 		"export": "npx expo export:web",
 		"update": "env-cmd eas update",
-		"build": "env-cmd eas build"
+		"build": "env-cmd eas build",
+		"submit": "env-cmd eas submit"
 	},
 	"dependencies": {
 		"@expo/vector-icons": "^13.0.0",
