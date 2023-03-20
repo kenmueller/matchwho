@@ -15,10 +15,12 @@
 		},
 		"assetBundlePatterns": ["**/*"],
 		"ios": {
+			"buildNumber": "1.0.2",
 			"bundleIdentifier": "io.matchwho.matchwho",
 			"supportsTablet": true
 		},
 		"android": {
+			"versionCode": 2,
 			"package": "io.matchwho.matchwho",
 			"adaptiveIcon": {
 				"foregroundImage": "assets/adaptive-icon.png",
