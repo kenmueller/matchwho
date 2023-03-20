@@ -299,12 +299,15 @@ const GameMatchAnswers = () => {
 		getNodeLinkPositions().then(setNodeLinkPositions)
 	}, [getNodeLinkPositions, setNodeLinkPositions, matches, dimensions])
 
+	// Poll node link positions
 	useEffect(() => {
-		// Fix offset match bug
-
-		setTimeout(() => {
+		const interval = setInterval(() => {
 			getNodeLinkPositions().then(setNodeLinkPositions)
 		}, 500)
+
+		return () => {
+			clearInterval(interval)
+		}
 	}, [getNodeLinkPositions, setNodeLinkPositions])
 
 	const [columnLayout, _setColumnLayout] = useState<{
