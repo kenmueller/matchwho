@@ -1,40 +1,33 @@
-import alertError from '../error/alert'
+import { io } from 'socket.io-client'
+
 import ClientGameData from '../game/data/client'
 import ServerGameData from '../game/data/server'
-import { SOCKET_ORIGIN } from './origin'
+import API_ORIGIN from './origin'
 
 export interface GameStream {
-	onData(handler: (data: ServerGameData) => Promise<void> | void): () => void
+	onData(handler: (data: ServerGameData) => void): () => void
 	send(data: ClientGameData): void
 	close(): void
 }
 
 const gameStream = (code: string, name: string | null): GameStream => {
-	const socket = new WebSocket(
-		`${SOCKET_ORIGIN}/games/${code}?name=${encodeURIComponent(name ?? '')}`
-	)
+	const socket = io(`${API_ORIGIN}/games/${code}/stream`, {
+		query: { name: name ?? '' }
+	})
 
 	return {
 		onData: handler => {
-			const _handler = async ({ data }: MessageEvent<string>) => {
-				try {
-					await handler(JSON.parse(data))
-				} catch (error) {
-					alertError(error)
-				}
-			}
-
-			socket.addEventListener('message', _handler)
+			socket.on('message', handler)
 
 			return () => {
-				socket.removeEventListener('message', _handler)
+				socket.off('message', handler)
 			}
 		},
 		send: data => {
-			socket.send(JSON.stringify(data))
+			socket.emit('message', data)
 		},
 		close: () => {
-			socket.close()
+			socket.disconnect()
 		}
 	}
 }
