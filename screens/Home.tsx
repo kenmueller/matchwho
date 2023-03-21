@@ -105,12 +105,19 @@ const HomeScreen = () => {
 								}
 							]}
 						>
-							<View style={styles.title}>
+							<View style={styles.header}>
 								<MatchIcon
 									fill={theme.white}
-									style={styles.titleIcon}
+									style={styles.headerIcon}
 								/>
-								<Text style={styles.titleText}>Match Who</Text>
+								<View style={styles.headerInfo}>
+									<Text style={styles.headerTitle}>
+										Match Who
+									</Text>
+									<Text style={styles.headerSubtitle}>
+										matchwho.io
+									</Text>
+								</View>
 							</View>
 							<HomeMainContent />
 							{!isKeyboardShowing && (
@@ -156,19 +163,27 @@ const styles = StyleSheet.create({
 		height: '100%',
 		alignItems: 'center'
 	},
-	title: {
+	header: {
 		flexDirection: 'row',
 		alignItems: 'center'
 	},
-	titleIcon: {
+	headerIcon: {
 		width: 48,
 		height: 57
 	},
-	titleText: {
-		marginLeft: 16,
+	headerInfo: {
+		marginLeft: 16
+	},
+	headerTitle: {
 		fontSize: 28,
 		fontWeight: '700',
 		color: theme.white
+	},
+	headerSubtitle: {
+		fontSize: 20,
+		fontWeight: '700',
+		color: theme.white,
+		opacity: 0.5
 	},
 	pastGames: {
 		paddingVertical: 10,
