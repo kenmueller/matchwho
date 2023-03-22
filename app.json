@@ -4,7 +4,7 @@
 		"description": "The ultimate party game. Get to know each other by figuring out who answered what.",
 		"slug": "matchwho",
 		"scheme": "matchwho",
-		"version": "1.0.2",
+		"version": "1.0.3",
 		"orientation": "portrait",
 		"icon": "assets/icon.png",
 		"userInterfaceStyle": "light",
@@ -15,12 +15,12 @@
 		},
 		"assetBundlePatterns": ["**/*"],
 		"ios": {
-			"buildNumber": "1.0.2",
+			"buildNumber": "1.0.3",
 			"bundleIdentifier": "io.matchwho.matchwho",
 			"supportsTablet": true
 		},
 		"android": {
-			"versionCode": 3,
+			"versionCode": 4,
 			"package": "io.matchwho.matchwho",
 			"adaptiveIcon": {
 				"foregroundImage": "assets/adaptive-icon.png",
