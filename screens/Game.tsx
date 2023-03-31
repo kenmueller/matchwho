@@ -20,6 +20,7 @@ import { StackNavigationProp } from '@react-navigation/stack'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { MaterialIcons } from '@expo/vector-icons'
 import * as Clipboard from 'expo-clipboard'
+import { useKeepAwake } from 'expo-keep-awake'
 
 import { AppScreens } from '../navigators/App'
 import theme from '../lib/theme'
@@ -52,6 +53,8 @@ const GameScreen = () => {
 
 	const { code } = useRoute<RouteProp<GameScreens, 'GameInternal'>>().params
 	const [meta, setMeta] = useState<GameMeta | null>(null)
+
+	useKeepAwake(code)
 
 	const [gameStream, setGameStream] = useContext(GameStreamContext)
 	const [game, setGame] = useContext(GameContext)
@@ -254,7 +257,14 @@ const GameScreen = () => {
 						gameStream && game ? (
 							<GameView />
 						) : meta.state === GameState.Joining ? (
-							<JoinGame joining={joining} join={join} />
+							<>
+								<Text style={styles.warning}>
+									{Platform.OS === 'web'
+										? 'Do not close this tab while the game is running'
+										: 'Do not turn off your device while the game is running'}
+								</Text>
+								<JoinGame joining={joining} join={join} />
+							</>
 						) : /* Joining as a spectator */ null
 					) : /* Loading */ null}
 				</View>
@@ -323,10 +333,22 @@ const styles = StyleSheet.create({
 		backgroundColor: theme.dark
 	},
 	container: {
+		position: 'relative',
 		width: '100%',
 		height: '100%',
 		justifyContent: 'center',
 		alignItems: 'center'
+	},
+	warning: {
+		position: 'absolute',
+		top: 24,
+		left: 32,
+		right: 32,
+		textAlign: 'center',
+		fontSize: 16,
+		fontWeight: '700',
+		color: theme.white,
+		opacity: 0.5
 	}
 })
 
